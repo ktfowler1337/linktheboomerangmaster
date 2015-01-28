@@ -22,11 +22,11 @@ namespace LinkTheBoomerangMaster
         public static int ScreenHeight;
 
         private _2DTexture background;
-        private _2DTexture cornerWallBlock;
-        private _2DTexture HorWallBlock;
-        private _2DTexture HorWallTile;
+        public _2DTexture cornerWallBlock;
+        public _2DTexture HorWallTile;
+        public _2DTexture VertWallTile;
 
-        private int scoreboardHeight = (int)(ScreenHeight * 0.2);
+        public int scoreboardHeight = (int)(ScreenHeight * 0.2);
 
         //scoreboard
         private Texture2D scoreboardBackground;
@@ -40,6 +40,10 @@ namespace LinkTheBoomerangMaster
         private _2DTexture scoreboardRightConnectorFrame;
         private _2DTexture scoreboardTopConnectorFrame;
         private _2DTexture scoreboardBotConnectorFrame;
+
+        const float BALL_START_SPEED = 8f;
+
+        private Bouncerang boomerang1;
 
         public GameController()
             : base()
@@ -59,6 +63,7 @@ namespace LinkTheBoomerangMaster
             // TODO: Add your initialization logic here
             ScreenHeight = GraphicsDevice.Viewport.Height;
             ScreenWidth = GraphicsDevice.Viewport.Width;
+            boomerang1 = new Bouncerang(this);
             base.Initialize();
         }
 
@@ -72,8 +77,8 @@ namespace LinkTheBoomerangMaster
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = new _2DTexture(Content.Load<Texture2D>("ground"));
             cornerWallBlock = new _2DTexture(Content.Load<Texture2D>("cornerBlockBot"));
-            HorWallBlock = new _2DTexture(Content.Load<Texture2D>("wall-H"));
-            HorWallTile = new _2DTexture(Content.Load<Texture2D>("wall-V-2"));
+            HorWallTile = new _2DTexture(Content.Load<Texture2D>("wall-H"));
+            VertWallTile = new _2DTexture(Content.Load<Texture2D>("wall-V-2"));
 
             //scoreboard
             scoreboardBackground = Content.Load<Texture2D>("blackdot");
@@ -88,6 +93,7 @@ namespace LinkTheBoomerangMaster
             scoreboardTopConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameTopConnector"));
             scoreboardBotConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameBotConnector"));
 
+            boomerang1.Texture = Content.Load<Texture2D>("rupee");
         }
 
         /// <summary>
@@ -111,6 +117,15 @@ namespace LinkTheBoomerangMaster
             ScreenWidth = GraphicsDevice.Viewport.Width;
             ScreenHeight = GraphicsDevice.Viewport.Height;
             scoreboardHeight = (int)(ScreenHeight * 0.2);
+
+            boomerang1.Move(boomerang1.Velocity);
+
+            if (!boomerang1.launched)
+            {
+                boomerang1.Launch(BALL_START_SPEED);
+                boomerang1.launched = true;
+            }
+                
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -131,16 +146,16 @@ namespace LinkTheBoomerangMaster
 
             // bottom wall
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            spriteBatch.Draw(HorWallBlock.texture, new Vector2(HorWallBlock.GetWidth(), ScreenHeight - HorWallBlock.GetHeight()),
-                new Rectangle(0, 0, ScreenWidth - HorWallBlock.GetWidth() * 2, HorWallBlock.GetHeight()), 
+            spriteBatch.Draw(HorWallTile.texture, new Vector2(HorWallTile.GetWidth(), ScreenHeight - HorWallTile.GetHeight()),
+                new Rectangle(0, 0, ScreenWidth - HorWallTile.GetWidth() * 2, HorWallTile.GetHeight()), 
                 Color.White, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
             spriteBatch.End();
 
             //left wall
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
 
-            spriteBatch.Draw(HorWallTile.texture, new Vector2(0, scoreboardHeight),
-                new Rectangle(0, 0, HorWallTile.texture.Width, ScreenHeight - scoreboardHeight - cornerWallBlock.GetHeight()),
+            spriteBatch.Draw(VertWallTile.texture, new Vector2(0, scoreboardHeight),
+                new Rectangle(0, 0, VertWallTile.texture.Width, ScreenHeight - scoreboardHeight - cornerWallBlock.GetHeight()),
                 Color.White, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
 
             spriteBatch.End();
@@ -148,8 +163,8 @@ namespace LinkTheBoomerangMaster
             //right wall
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
 
-            spriteBatch.Draw(HorWallTile.texture, new Vector2(ScreenWidth - HorWallTile.GetWidth(), scoreboardHeight),
-                new Rectangle(0, 0, HorWallTile.texture.Width, ScreenHeight - scoreboardHeight - cornerWallBlock.GetHeight()),
+            spriteBatch.Draw(VertWallTile.texture, new Vector2(ScreenWidth - VertWallTile.GetWidth(), scoreboardHeight),
+                new Rectangle(0, 0, VertWallTile.texture.Width, ScreenHeight - scoreboardHeight - cornerWallBlock.GetHeight()),
                 Color.White, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
 
             spriteBatch.End();
@@ -162,6 +177,12 @@ namespace LinkTheBoomerangMaster
             spriteBatch.End();
 
             drawScoreboard();
+
+            spriteBatch.Begin();
+
+            boomerang1.Draw(spriteBatch);
+
+            spriteBatch.End();
             
             // TODO: Add your drawing code here
 
