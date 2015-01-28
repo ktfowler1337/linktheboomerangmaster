@@ -17,6 +17,8 @@ namespace LinkTheBoomerangMaster
         public bool isMoving = false;
         public AnimatedTexture animatedTexture;
 
+        private float scaleOveride = 0;
+
         public GameObject(float scale = 0)
         {
             if (scale == 0)
