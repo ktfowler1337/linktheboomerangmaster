@@ -49,6 +49,13 @@ namespace LinkTheBoomerangMaster
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.GetWidth(), Texture.GetHeight()); }
         }
+
+        public static bool CheckLinkBoomCollision(Player player, Bouncerang boom)
+        {
+            if (player.Bounds.Intersects(boom.Bounds))
+                return true;
+            return false;
+        }
     }
     
 }

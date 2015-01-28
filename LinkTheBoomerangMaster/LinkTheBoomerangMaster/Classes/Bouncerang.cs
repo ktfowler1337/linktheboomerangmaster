@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace LinkTheBoomerangMaster.Classes
 {
-    class Bouncerang : GameObject
+    public class Bouncerang : GameObject
     {
         public Vector2 Velocity;
         public Random random;
@@ -55,11 +55,11 @@ namespace LinkTheBoomerangMaster.Classes
                 Position.X = _game.environment.VertWallTile.GetWidth();
                 Velocity.X *= -1;
             }
-            if (Position.Y + Texture.GetHeight() > GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight())
-            {
-                Position.Y = GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight() - Texture.GetHeight();
-                Velocity.Y *= -1;
-            }
+            //if (Position.Y + Texture.GetHeight() > GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight())
+            //{
+            //    Position.Y = GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight() - Texture.GetHeight();
+            //    Velocity.Y *= -1;
+            //}
             if (Position.X + (animatedTexture.myTexture.Width*GameController.scale) / 4 > GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth())
             {
                 Position.X = GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth() - (animatedTexture.myTexture.Width*GameController.scale) / 4;

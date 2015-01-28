@@ -117,10 +117,21 @@ namespace LinkTheBoomerangMaster
             if(link.isMoving)
                 link.animatedTexture.UpdateFrame(elapsed);
             boomerang1.animatedTexture.UpdateFrame(elapsed);
+
+            if (GameObject.CheckLinkBoomCollision(link, boomerang1))
+            {
+                boomerang1.Velocity.Y = Math.Abs(boomerang1.Velocity.Y) *-1;
+            }
+
             if (!boomerang1.launched)
             {
                 boomerang1.Launch(BALL_START_SPEED);
                 boomerang1.launched = true;
+            }
+
+            if (boomerang1.Position.Y > ScreenHeight)
+            {
+                boomerang1.Launch(BALL_START_SPEED);
             }
                 
             // TODO: Add your update logic here
