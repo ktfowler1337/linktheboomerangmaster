@@ -14,15 +14,20 @@ namespace LinkTheBoomerangMaster.Classes
         public bool launched = false;
         private GameController _game;
 
+        private const int Frames = 4;
+        private const int FramesPerSec = 14;
+
         public Bouncerang(GameController game)
         {
             random = new Random();
             _game = game;
+            animatedTexture.Load(game.Content, "boom", Frames, FramesPerSec);
+            isMoving = true;
         }
 
         public void Launch(float speed)
         {
-            Position = new Vector2(GameController.ScreenWidth / 2 - Texture.Width / 2, GameController.ScreenHeight / 2 - Texture.Height / 2);
+            Position = new Vector2(GameController.ScreenWidth / 2 - Texture.GetWidth() / 2, GameController.ScreenHeight / 2 - Texture.GetHeight() / 2);
             // get a random + or - 60 degrees angle to the right
             float rotation = (float)(Math.PI / 2 + (random.NextDouble() * (Math.PI / 1.5f) - Math.PI / 3));
 
@@ -50,14 +55,14 @@ namespace LinkTheBoomerangMaster.Classes
                 Position.X = _game.environment.VertWallTile.GetWidth();
                 Velocity.X *= -1;
             }
-            if (Position.Y + Texture.Height > GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight())
+            if (Position.Y + Texture.GetHeight() > GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight())
             {
-                Position.Y = GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight() - Texture.Height;
+                Position.Y = GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight() - Texture.GetHeight();
                 Velocity.Y *= -1;
             }
-            if (Position.X + Texture.Width > GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth())
+            if (Position.X + (animatedTexture.myTexture.Width*GameController.scale) / 4 > GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth())
             {
-                Position.X = GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth() - Texture.Width;
+                Position.X = GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth() - (animatedTexture.myTexture.Width*GameController.scale) / 4;
                 Velocity.X *= -1;
             }
         }

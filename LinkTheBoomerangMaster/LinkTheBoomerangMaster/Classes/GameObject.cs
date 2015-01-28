@@ -5,17 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using LinkTheBoomerangMaster.Classes;
+using Microsoft.Xna.Framework.Media;
 
 namespace LinkTheBoomerangMaster
 {
     public class GameObject
     {
         public Vector2 Position;
-        public Texture2D Texture;
+        public _2DTexture Texture;
+        public bool isMoving = false;
+        public AnimatedTexture animatedTexture;
+
+        public GameObject(float scale = 0)
+        {
+            if (scale == 0)
+                scale = GameController.scale;
+            animatedTexture = new AnimatedTexture(Position, 0, scale, 0.5f);
+
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            if (isMoving)
+            {
+                animatedTexture.DrawFrame(spriteBatch, Position);
+            }
+            else
+            {
+                animatedTexture.Reset();
+                spriteBatch.Draw(Texture.texture, new Rectangle((int)Position.X, (int)Position.Y, Texture.GetWidth(), Texture.GetHeight()), Color.White);
+            }                
         }
 
         public virtual void Move(Vector2 amount)
@@ -25,7 +45,7 @@ namespace LinkTheBoomerangMaster
 
         public Rectangle Bounds
         {
-            get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
+            get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.GetWidth(), Texture.GetHeight()); }
         }
     }
     

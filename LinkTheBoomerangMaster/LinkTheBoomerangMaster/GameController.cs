@@ -3,6 +3,7 @@ using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 #endregion
@@ -14,8 +15,8 @@ namespace LinkTheBoomerangMaster
     /// </summary>
     public class GameController : Game
     {
-
-        GraphicsDeviceManager graphics;
+        protected Song song;
+        public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public static int ScreenWidth;
@@ -25,13 +26,16 @@ namespace LinkTheBoomerangMaster
 
         public Scoreboard scoreBoard;
 
+        Player link;
+
         public static float scale = 1.5f;
-
-
 
         const float BALL_START_SPEED = 8f;
 
+        const float KEYBOARD_PLAYER_SPEED = 10f;
+
         private Bouncerang boomerang1;
+
 
         public GameController()
             : base()
@@ -42,6 +46,9 @@ namespace LinkTheBoomerangMaster
             graphics.PreferredBackBufferHeight = 750;   // set this value to the desired height of your window
             graphics.ApplyChanges();
 
+
+            // Set device frame rate to 30 fps.
+            TargetElapsedTime = TimeSpan.FromSeconds(1 / 30.0);
         }
 
         /// <summary>
@@ -58,6 +65,8 @@ namespace LinkTheBoomerangMaster
             boomerang1 = new Bouncerang(this);
             environment = new GameEnvironment(this);
             scoreBoard = new Scoreboard(this);
+            link = new Player(this);
+            Input.link = link;
             base.Initialize();
         }
 
@@ -69,7 +78,10 @@ namespace LinkTheBoomerangMaster
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            boomerang1.Texture = Content.Load<Texture2D>("rupee");
+            boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("rupee"),scale);
+            song = Content.Load<Song>("metal-zelda");
+            MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(song);
         }
 
         /// <summary>
@@ -95,6 +107,16 @@ namespace LinkTheBoomerangMaster
 
             boomerang1.Move(boomerang1.Velocity);
 
+            Vector2 player1Velocity = Input.GetKeyboardInputDirection(PlayerIndex.One) * KEYBOARD_PLAYER_SPEED;
+
+            link.Move(player1Velocity);
+
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // TODO: Add your game logic here.
+            if(link.isMoving)
+                link.animatedTexture.UpdateFrame(elapsed);
+            boomerang1.animatedTexture.UpdateFrame(elapsed);
             if (!boomerang1.launched)
             {
                 boomerang1.Launch(BALL_START_SPEED);
@@ -112,17 +134,18 @@ namespace LinkTheBoomerangMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-
             environment.Draw(spriteBatch);
             scoreBoard.Draw(spriteBatch);
 
             spriteBatch.Begin();
 
             boomerang1.Draw(spriteBatch);
+            
+            link.Draw(spriteBatch);
 
             spriteBatch.End();
             
-            // TODO: Add your drawing code here
+            // TODO: Add your drawing code here    
 
             base.Draw(gameTime);
         }
