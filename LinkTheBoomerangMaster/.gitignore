@@ -184,8 +184,9 @@ FakesAssemblies/
 
 
 #Adrian Added
-.csproj
-.sln
-.userprefs
+*.csproj
+*.sln
+*.userprefs
+Icon.png
 Program.cs
 AssemblyInfo.cs
