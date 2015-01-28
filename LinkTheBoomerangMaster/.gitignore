@@ -181,3 +181,11 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+
+#Adrian Added
+.csproj
+.sln
+.userprefs
+Program.cs
+AssemblyInfo.cs
