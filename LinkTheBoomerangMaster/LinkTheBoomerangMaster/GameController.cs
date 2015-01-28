@@ -26,6 +26,8 @@ namespace LinkTheBoomerangMaster
         public _2DTexture HorWallTile;
         public _2DTexture VertWallTile;
 
+        private float scale = 1.5f;
+
         public int scoreboardHeight = (int)(ScreenHeight * 0.2);
 
         //scoreboard
@@ -50,6 +52,9 @@ namespace LinkTheBoomerangMaster
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 750;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 750;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -75,23 +80,23 @@ namespace LinkTheBoomerangMaster
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = new _2DTexture(Content.Load<Texture2D>("ground"));
-            cornerWallBlock = new _2DTexture(Content.Load<Texture2D>("cornerBlockBot"));
-            HorWallTile = new _2DTexture(Content.Load<Texture2D>("wall-H"));
-            VertWallTile = new _2DTexture(Content.Load<Texture2D>("wall-V-2"));
+            background = new _2DTexture(Content.Load<Texture2D>("ground"),scale);
+            cornerWallBlock = new _2DTexture(Content.Load<Texture2D>("cornerBlockBot"), scale);
+            HorWallTile = new _2DTexture(Content.Load<Texture2D>("wall-H"), scale);
+            VertWallTile = new _2DTexture(Content.Load<Texture2D>("wall-V-2"), scale);
 
             //scoreboard
             scoreboardBackground = Content.Load<Texture2D>("blackdot");
 
-            scoreboardTopLeftCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameLeftTopCorner"));
-            scoreboardTopRightCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameRightTopCorner"));
-            scoreboardBotLeftCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameLeftBotCorner"));
-            scoreboardBotRightCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameRightBotCorner"));
+            scoreboardTopLeftCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameLeftTopCorner"), scale);
+            scoreboardTopRightCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameRightTopCorner"), scale);
+            scoreboardBotLeftCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameLeftBotCorner"), scale);
+            scoreboardBotRightCornerFrame = new _2DTexture(Content.Load<Texture2D>("frameRightBotCorner"), scale);
 
-            scoreboardLeftConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameLeftConnector"));
-            scoreboardRightConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameRightConnector")); 
-            scoreboardTopConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameTopConnector"));
-            scoreboardBotConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameBotConnector"));
+            scoreboardLeftConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameLeftConnector"), scale);
+            scoreboardRightConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameRightConnector"), scale);
+            scoreboardTopConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameTopConnector"), scale);
+            scoreboardBotConnectorFrame = new _2DTexture(Content.Load<Texture2D>("frameBotConnector"), scale);
 
             boomerang1.Texture = Content.Load<Texture2D>("rupee");
         }
@@ -140,7 +145,7 @@ namespace LinkTheBoomerangMaster
             //background
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
 
-            spriteBatch.Draw(background.texture, Vector2.Zero, new Rectangle(0, 0, 800, 480), Color.White, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
+            spriteBatch.Draw(background.texture, Vector2.Zero, new Rectangle(0, 0, ScreenWidth, ScreenHeight), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             
             spriteBatch.End();
 
@@ -148,7 +153,7 @@ namespace LinkTheBoomerangMaster
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
             spriteBatch.Draw(HorWallTile.texture, new Vector2(HorWallTile.GetWidth(), ScreenHeight - HorWallTile.GetHeight()),
                 new Rectangle(0, 0, ScreenWidth - HorWallTile.GetWidth() * 2, HorWallTile.GetHeight()), 
-                Color.White, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
+                Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
             spriteBatch.End();
 
             //left wall
@@ -156,7 +161,7 @@ namespace LinkTheBoomerangMaster
 
             spriteBatch.Draw(VertWallTile.texture, new Vector2(0, scoreboardHeight),
                 new Rectangle(0, 0, VertWallTile.texture.Width, ScreenHeight - scoreboardHeight - cornerWallBlock.GetHeight()),
-                Color.White, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
+                Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
 
             spriteBatch.End();
 
@@ -165,7 +170,7 @@ namespace LinkTheBoomerangMaster
 
             spriteBatch.Draw(VertWallTile.texture, new Vector2(ScreenWidth - VertWallTile.GetWidth(), scoreboardHeight),
                 new Rectangle(0, 0, VertWallTile.texture.Width, ScreenHeight - scoreboardHeight - cornerWallBlock.GetHeight()),
-                Color.White, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
+                Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
 
             spriteBatch.End();
 
