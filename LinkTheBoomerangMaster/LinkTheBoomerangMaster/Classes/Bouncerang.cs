@@ -40,24 +40,24 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void CheckWallCollision()
         {
-            if (Position.Y < _game.scoreboardHeight)
+            if (Position.Y < _game.scoreBoard.scoreboardHeight)
             {
-                Position.Y = _game.scoreboardHeight;
+                Position.Y = _game.scoreBoard.scoreboardHeight;
                 Velocity.Y *= -1;
             }
-            if (Position.X < _game.VertWallTile.GetWidth())
+            if (Position.X < _game.environment.VertWallTile.GetWidth())
             {
-                Position.X = _game.VertWallTile.GetWidth();
+                Position.X = _game.environment.VertWallTile.GetWidth();
                 Velocity.X *= -1;
             }
-            if (Position.Y + Texture.Height > GameController.ScreenHeight - _game.HorWallTile.GetHeight())
+            if (Position.Y + Texture.Height > GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight())
             {
-                Position.Y = GameController.ScreenHeight - _game.HorWallTile.GetHeight() - Texture.Height;
+                Position.Y = GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight() - Texture.Height;
                 Velocity.Y *= -1;
             }
-            if (Position.X + Texture.Width > GameController.ScreenWidth - _game.VertWallTile.GetWidth())
+            if (Position.X + Texture.Width > GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth())
             {
-                Position.X = GameController.ScreenWidth - _game.VertWallTile.GetWidth() - Texture.Width;
+                Position.X = GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth() - Texture.Width;
                 Velocity.X *= -1;
             }
         }
