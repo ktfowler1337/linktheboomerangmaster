@@ -16,10 +16,13 @@ namespace LinkTheBoomerangMaster
         private const int Frames = 8;
         private const int FramesPerSec = 6;
 
-        public Player(GameController game) : base(1.5f)
+        public Player(GameController game) : base(2f)
         {
             _game = game;
             Texture = new _2DTexture(game.Content.Load<Texture2D>("linkidle"), GameController.scale);
+
+
+            Texture._scale = 2;
             Position = new Vector2((GameController.ScreenWidth / 2) - (Texture.GetWidth() / 2), GameController.ScreenHeight - game.environment.HorWallTile.GetHeight() - (int)(GameController.ScreenHeight * 0.01) - Texture.GetHeight());
             animatedTexture.Load(game.Content, "link", Frames, FramesPerSec);
         }

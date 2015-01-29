@@ -22,6 +22,13 @@ namespace LinkTheBoomerangMaster.Classes
         private _2DTexture scoreboardRightConnectorFrame;
         private _2DTexture scoreboardTopConnectorFrame;
         private _2DTexture scoreboardBotConnectorFrame;
+        //icons
+        private _2DTexture bomb;
+        private _2DTexture arrow;
+        private _2DTexture potion;
+        private _2DTexture heart;
+        private _2DTexture rupee;
+
 
         public int scoreboardHeight;
 
@@ -42,11 +49,21 @@ namespace LinkTheBoomerangMaster.Classes
             scoreboardRightConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameRightConnector"), GameController.scale);
             scoreboardTopConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameTopConnector"), GameController.scale);
             scoreboardBotConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameBotConnector"), GameController.scale);
+
+            bomb = new _2DTexture(_game.Content.Load<Texture2D>("singleBomb"), GameController.scale);
+            arrow = new _2DTexture(_game.Content.Load<Texture2D>("singleArrow"), GameController.scale);
+            potion = new _2DTexture(_game.Content.Load<Texture2D>("potion"), GameController.scale);
+            heart = new _2DTexture(_game.Content.Load<Texture2D>("heart"), GameController.scale);
+            rupee = new _2DTexture(_game.Content.Load<Texture2D>("rupee"), GameController.scale);
+        
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            
             spriteBatch.Begin();
+
+            //corners
             spriteBatch.Draw(scoreboardBackground, new Rectangle(0, 0, GameController.ScreenWidth, scoreboardHeight), Color.White);
 
             spriteBatch.Draw(scoreboardTopLeftCornerFrame.texture, new Rectangle(0, 0, scoreboardTopLeftCornerFrame.GetWidth(), scoreboardTopLeftCornerFrame.GetHeight()), Color.White);
@@ -57,9 +74,12 @@ namespace LinkTheBoomerangMaster.Classes
 
             spriteBatch.Draw(scoreboardBotRightCornerFrame.texture, new Rectangle(GameController.ScreenWidth - scoreboardBotRightCornerFrame.GetWidth(), scoreboardHeight - scoreboardBotLeftCornerFrame.GetHeight(), scoreboardBotLeftCornerFrame.GetWidth(), scoreboardBotLeftCornerFrame.GetHeight()), Color.White);
 
+            //icons
+            spriteBatch.Draw(scoreboardBotRightCornerFrame.texture, new Rectangle(GameController.ScreenWidth - scoreboardBotRightCornerFrame.GetWidth(), scoreboardHeight - scoreboardBotLeftCornerFrame.GetHeight(), scoreboardBotLeftCornerFrame.GetWidth(), scoreboardBotLeftCornerFrame.GetHeight()), Color.White);
 
             spriteBatch.End();
 
+            //frame edges
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
 
             spriteBatch.Draw(scoreboardLeftConnectorFrame.texture, new Vector2(0, scoreboardBotRightCornerFrame.GetHeight()),
@@ -91,6 +111,11 @@ namespace LinkTheBoomerangMaster.Classes
                 Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             spriteBatch.End();
+            //frames end
+
+            
+
+
         }
     }
 }

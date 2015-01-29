@@ -81,7 +81,7 @@ namespace LinkTheBoomerangMaster
             boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("rupee"),scale);
             song = Content.Load<Song>("metal-zelda");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(song);
+            //MediaPlayer.Play(song);
         }
 
         /// <summary>
