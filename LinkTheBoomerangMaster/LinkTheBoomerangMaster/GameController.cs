@@ -37,13 +37,14 @@ namespace LinkTheBoomerangMaster
         private Bouncerang boomerang1;
 
 
+
         public GameController()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 750;  // set this value to the desired width of your window
-            graphics.PreferredBackBufferHeight = 750;   // set this value to the desired height of your window
+            graphics.PreferredBackBufferWidth = 575;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 600;   // set this value to the desired height of your window
             graphics.ApplyChanges();
 
 
@@ -81,7 +82,14 @@ namespace LinkTheBoomerangMaster
             boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("rupee"),scale);
             song = Content.Load<Song>("metal-zelda");
             MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(song);
+            try
+            {
+                MediaPlayer.Play(song);
+            }
+            catch
+            {
+
+            }
         }
 
         /// <summary>
