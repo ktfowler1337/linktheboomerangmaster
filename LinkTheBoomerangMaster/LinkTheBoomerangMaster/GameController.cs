@@ -48,7 +48,7 @@ namespace LinkTheBoomerangMaster
             Content.RootDirectory = "Content";
             SoundEffect.MasterVolume = 1f;
             graphics.PreferredBackBufferWidth = 575;  // set this value to the desired width of your window
-            graphics.PreferredBackBufferHeight = 600;   // set this value to the desired height of your window
+            graphics.PreferredBackBufferHeight = 700;   // set this value to the desired height of your window
             graphics.ApplyChanges();
 
 

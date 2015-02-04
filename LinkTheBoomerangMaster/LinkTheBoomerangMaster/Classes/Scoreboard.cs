@@ -39,7 +39,7 @@ namespace LinkTheBoomerangMaster.Classes
         public Scoreboard(GameController game)
         {
             _game = game;
-            scoreboardHeight = (int)(GameController.ScreenHeight * 0.2);
+            scoreboardHeight = 120;
             //scoreboard
             scoreboardBackground = _game.Content.Load<Texture2D>("scoreboard/blackdot");
 
