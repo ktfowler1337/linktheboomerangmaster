@@ -13,8 +13,8 @@ namespace LinkTheBoomerangMaster
     {
         public GameController _game;
 
-        private const int Frames = 8;
-        private const int FramesPerSec = 6;
+        public const int Frames = 8;
+        public const int FramesPerSec = 6;
 
         public bool throwMode = true;
 
@@ -22,10 +22,12 @@ namespace LinkTheBoomerangMaster
 
         private _2DTexture throwIdle;
 
+        public bool hasHitTheRoof = false;
+
         const float KEYBOARD_PLAYER_SPEED = 10f;
 
         public int BombCount = 0;
-        public int ArrowCount = 0;
+        public int ArrowCount = 10;
         public int LifeCount = 3;
         public int RupeeCount = 0;
 
@@ -65,7 +67,7 @@ namespace LinkTheBoomerangMaster
 
         public void Update(GameTime time)
         {
-            Move(Input.GetKeyboardInputDirection(PlayerIndex.One) * KEYBOARD_PLAYER_SPEED);
+            Move(Input.GetKeyboardInputDirection(PlayerIndex.One, _game) * KEYBOARD_PLAYER_SPEED);
             if (isMoving)
             {
                 animatedTexture.UpdateFrame((float)time.ElapsedGameTime.TotalSeconds);

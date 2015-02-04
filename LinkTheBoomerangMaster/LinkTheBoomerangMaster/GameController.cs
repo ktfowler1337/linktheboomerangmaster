@@ -39,7 +39,7 @@ namespace LinkTheBoomerangMaster
 
         private List<Bouncerang> bouncerangs;
 
-
+        public List<GameObject> Projectiles;
 
         public GameController()
             : base()
@@ -65,6 +65,7 @@ namespace LinkTheBoomerangMaster
         protected override void Initialize()
         {
             bouncerangs = new List<Bouncerang>();
+            Projectiles = new List<GameObject>();
             ScreenHeight = GraphicsDevice.Viewport.Height;
             ScreenWidth = GraphicsDevice.Viewport.Width;
             Bouncerang boomerang1 = new Bouncerang(this);
@@ -93,6 +94,8 @@ namespace LinkTheBoomerangMaster
             try
             {
                 MediaPlayer.Play(song);
+                if (!MusicOn)
+                    MediaPlayer.Pause();
             }
             catch
             {
@@ -130,6 +133,14 @@ namespace LinkTheBoomerangMaster
                     b.Update(gameTime);
                     b.CheckState(link);
                 }
+                foreach (GameObject p in Projectiles)
+                {
+                    if(p is Arrow)
+                    {
+                        Arrow a = (Arrow)p;
+                        a.Update(gameTime);
+                    }                    
+                }
 
                 base.Update(gameTime);
             }
@@ -149,6 +160,15 @@ namespace LinkTheBoomerangMaster
                 foreach (Bouncerang b in bouncerangs)
                 {
                     b.Draw(spriteBatch);
+                }
+
+                foreach (GameObject p in Projectiles)
+                {
+                    if (p is Arrow)
+                    {
+                        Arrow a = (Arrow)p;
+                        a.Draw(spriteBatch);
+                    }    
                 }
 
                 link.Draw(spriteBatch);

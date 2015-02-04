@@ -59,11 +59,10 @@ namespace LinkTheBoomerangMaster
         }
 
 
-        public static Vector2 GetKeyboardInputDirection(PlayerIndex playerIndex)
+        public static Vector2 GetKeyboardInputDirection(PlayerIndex playerIndex, GameController game)
         {
             Vector2 direction = Vector2.Zero;
             KeyboardState keyboardState = Keyboard.GetState();
-
             if (playerIndex == PlayerIndex.One)
             {
                 if (keyboardState.IsKeyDown(Keys.A))
@@ -79,6 +78,16 @@ namespace LinkTheBoomerangMaster
                 else
                 {
                     link.isMoving = false;
+                }
+
+                if(link.ArrowCount > 0)
+                {
+                    if (keyboardState.IsKeyDown(Keys.Q))
+                    {
+                        link.ArrowCount -= 1;
+                        Arrow a = new Arrow(game);
+                        a.Launch();
+                    }
                 }
 
                 if(link.throwMode)

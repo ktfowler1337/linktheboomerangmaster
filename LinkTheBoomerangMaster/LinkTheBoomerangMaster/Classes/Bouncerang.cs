@@ -58,7 +58,7 @@ namespace LinkTheBoomerangMaster.Classes
             {
                 link.throwMode = true;
                 this.launched = false;
-                this.Position = new Vector2(0, 0);
+                this.Position = new Vector2(50, 50);
                 link.LifeCount -= 1;
             }
         }
@@ -87,6 +87,13 @@ namespace LinkTheBoomerangMaster.Classes
             bool collided = false;
             if (Position.Y < _game.scoreBoard.scoreboardHeight)
             {
+
+                if (!_game.link.hasHitTheRoof && launched)
+                {
+                    _game.link.Texture = new _2DTexture(_game.Content.Load<Texture2D>("player/linkidlesmall"), 2);
+                    _game.link.animatedTexture.Load(_game.Content, "player/linkwithpaddlesmall", Player.Frames, Player.FramesPerSec);
+                    _game.link.hasHitTheRoof = true;
+                }
                 Position.Y = _game.scoreBoard.scoreboardHeight;
                 Velocity.Y *= -1;
                 collided = true;
