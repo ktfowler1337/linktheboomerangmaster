@@ -1,6 +1,7 @@
 ﻿#region Using Statements
 using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -28,8 +29,11 @@ namespace LinkTheBoomerangMaster
 
         public Player link;
 
-        public bool SoundOn = true;
-        public bool MusicOn = true;
+        public static bool Paused = false;
+
+        public static bool SoundOn = true;
+        public static float SoundVolume = 0.8f;
+        public static bool MusicOn = true;
 
         public static float scale = 1.5f;
 
@@ -42,6 +46,7 @@ namespace LinkTheBoomerangMaster
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            SoundEffect.MasterVolume = 1f;
             graphics.PreferredBackBufferWidth = 575;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight = 600;   // set this value to the desired height of your window
             graphics.ApplyChanges();
@@ -111,19 +116,23 @@ namespace LinkTheBoomerangMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-            ScreenWidth = GraphicsDevice.Viewport.Width;
-            ScreenHeight = GraphicsDevice.Viewport.Height;
-
-            link.Update(gameTime);
-            foreach(Bouncerang b in bouncerangs)
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Paused = !Paused;
+            Input.CheckKeyboardInput();
+            if (!Paused)
             {
-                b.Update(gameTime);
-                b.CheckState(link);
-            }
+                ScreenWidth = GraphicsDevice.Viewport.Width;
+                ScreenHeight = GraphicsDevice.Viewport.Height;
 
-            base.Update(gameTime);
+                link.Update(gameTime);
+                foreach (Bouncerang b in bouncerangs)
+                {
+                    b.Update(gameTime);
+                    b.CheckState(link);
+                }
+
+                base.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -132,23 +141,24 @@ namespace LinkTheBoomerangMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            environment.Draw(spriteBatch);
-            scoreBoard.Draw(spriteBatch);
+                environment.Draw(spriteBatch);
+                scoreBoard.Draw(spriteBatch);
 
-            spriteBatch.Begin();
+                spriteBatch.Begin();
 
-            foreach (Bouncerang b in bouncerangs)
-            {
-                b.Draw(spriteBatch);
-            }
+                foreach (Bouncerang b in bouncerangs)
+                {
+                    b.Draw(spriteBatch);
+                }
+
+                link.Draw(spriteBatch);
+
+                spriteBatch.End();
+
+                // TODO: Add your drawing code here    
+
+                base.Draw(gameTime);
             
-            link.Draw(spriteBatch);
-
-            spriteBatch.End();
-            
-            // TODO: Add your drawing code here    
-
-            base.Draw(gameTime);
         }
     }
 }

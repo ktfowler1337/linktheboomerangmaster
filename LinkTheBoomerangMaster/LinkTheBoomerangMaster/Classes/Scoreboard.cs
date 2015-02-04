@@ -88,10 +88,10 @@ namespace LinkTheBoomerangMaster.Classes
             spriteBatch.DrawString(fontSmaller, "x " + _game.link.RupeeCount.ToString("D3"), new Vector2(GameController.ScreenWidth - 85, 65), Color.White);
 
             //Music ON/OFF Text
-            spriteBatch.DrawString(fontSmaller, "Music: "  + (_game.MusicOn ? "ON" : "OFF") , new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.10)), Color.White);
+            spriteBatch.DrawString(fontSmaller, "Music: "  + (GameController.MusicOn ? "ON" : "OFF") , new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.10)), Color.White);
 
             //Sound ON/OFF Text
-            spriteBatch.DrawString(fontSmaller, "Sound: " + (_game.SoundOn ? "ON" : "OFF"), new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.45)), Color.White);
+            spriteBatch.DrawString(fontSmaller, "Sound: " + (GameController.SoundOn ? "ON" : "OFF"), new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.45)), Color.White);
 
             spriteBatch.End();
         }
