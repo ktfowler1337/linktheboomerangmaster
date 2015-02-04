@@ -27,6 +27,7 @@ namespace LinkTheBoomerangMaster.Classes
         private _2DTexture arrow;
         private _2DTexture potion;
         private _2DTexture heart;
+        private _2DTexture heartEmpty;
         private _2DTexture rupee;
 
         private SpriteFont font;
@@ -40,26 +41,27 @@ namespace LinkTheBoomerangMaster.Classes
             _game = game;
             scoreboardHeight = (int)(GameController.ScreenHeight * 0.2);
             //scoreboard
-            scoreboardBackground = _game.Content.Load<Texture2D>("blackdot");
+            scoreboardBackground = _game.Content.Load<Texture2D>("scoreboard/blackdot");
 
-            scoreboardTopLeftCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameLeftTopCorner"), GameController.scale);
-            scoreboardTopRightCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameRightTopCorner"), GameController.scale);
-            scoreboardBotLeftCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameLeftBotCorner"), GameController.scale);
-            scoreboardBotRightCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameRightBotCorner"), GameController.scale);
+            scoreboardTopLeftCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameLeftTopCorner"), GameController.scale);
+            scoreboardTopRightCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameRightTopCorner"), GameController.scale);
+            scoreboardBotLeftCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameLeftBotCorner"), GameController.scale);
+            scoreboardBotRightCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameRightBotCorner"), GameController.scale);
 
-            scoreboardLeftConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameLeftConnector"), GameController.scale);
-            scoreboardRightConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameRightConnector"), GameController.scale);
-            scoreboardTopConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameTopConnector"), GameController.scale);
-            scoreboardBotConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("frameBotConnector"), GameController.scale);
+            scoreboardLeftConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameLeftConnector"), GameController.scale);
+            scoreboardRightConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameRightConnector"), GameController.scale);
+            scoreboardTopConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameTopConnector"), GameController.scale);
+            scoreboardBotConnectorFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameBotConnector"), GameController.scale);
 
-            bomb = new _2DTexture(_game.Content.Load<Texture2D>("singleBomb"), 2);
-            arrow = new _2DTexture(_game.Content.Load<Texture2D>("singleArrow"), 1.5f);
-            potion = new _2DTexture(_game.Content.Load<Texture2D>("potion"), GameController.scale);
-            heart = new _2DTexture(_game.Content.Load<Texture2D>("heartFULL"), 2.5f);
-            rupee = new _2DTexture(_game.Content.Load<Texture2D>("rupee"), 1.3f);
+            bomb = new _2DTexture(_game.Content.Load<Texture2D>("icon/singleBomb"), 2);
+            arrow = new _2DTexture(_game.Content.Load<Texture2D>("icon/singleArrow"), 1.5f);
+            potion = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/potion"), GameController.scale);
+            heart = new _2DTexture(_game.Content.Load<Texture2D>("icon/heartFULL"), 2.5f);
+            heartEmpty = new _2DTexture(_game.Content.Load<Texture2D>("icon/heartEMPTY"), 2.5f);
+            rupee = new _2DTexture(_game.Content.Load<Texture2D>("icon/rupee"), 1.3f);
 
-            font = _game.Content.Load<SpriteFont>("font");
-            fontSmaller = _game.Content.Load<SpriteFont>("font12");
+            font = _game.Content.Load<SpriteFont>("fonts/font");
+            fontSmaller = _game.Content.Load<SpriteFont>("fonts/font12");
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -77,19 +79,19 @@ namespace LinkTheBoomerangMaster.Classes
             spriteBatch.DrawString(font, "-Life-", new Vector2((GameController.ScreenWidth / 2) - 53, -5), Color.White);
 
             //Bomb Count Text
-            spriteBatch.DrawString(fontSmaller, "x 000", new Vector2(GameController.ScreenWidth - 85, -6), Color.White);
+            spriteBatch.DrawString(fontSmaller, "x " + _game.link.BombCount.ToString("D3"), new Vector2(GameController.ScreenWidth - 85, -6), Color.White);
 
             //Arrow Count Text
-            spriteBatch.DrawString(fontSmaller, "x 000", new Vector2(GameController.ScreenWidth - 85, 30), Color.White);
+            spriteBatch.DrawString(fontSmaller, "x " + _game.link.ArrowCount.ToString("D3"), new Vector2(GameController.ScreenWidth - 85, 30), Color.White);
 
             //Rupee Count Text
-            spriteBatch.DrawString(fontSmaller, "x 000", new Vector2(GameController.ScreenWidth - 85, 65), Color.White);
+            spriteBatch.DrawString(fontSmaller, "x " + _game.link.RupeeCount.ToString("D3"), new Vector2(GameController.ScreenWidth - 85, 65), Color.White);
 
             //Music ON/OFF Text
-            spriteBatch.DrawString(fontSmaller, "Music: ON", new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.10)), Color.White);
+            spriteBatch.DrawString(fontSmaller, "Music: "  + (_game.MusicOn ? "ON" : "OFF") , new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.10)), Color.White);
 
             //Sound ON/OFF Text
-            spriteBatch.DrawString(fontSmaller, "Sound: ON", new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.45)), Color.White);
+            spriteBatch.DrawString(fontSmaller, "Sound: " + (_game.SoundOn ? "ON" : "OFF"), new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.45)), Color.White);
 
             spriteBatch.End();
         }
@@ -116,19 +118,19 @@ namespace LinkTheBoomerangMaster.Classes
                 rupee.GetWidth(), rupee.GetHeight()), Color.White);
 
             //Heart1 Icon
-            spriteBatch.Draw(heart.texture, new Rectangle(
+            spriteBatch.Draw((_game.link.LifeCount > 0 ? heart.texture : heartEmpty.texture), new Rectangle(
                 (GameController.ScreenWidth / 2) - (int)((heart.GetWidth() * 1.5f) + 5) - heart.GetWidth(),
                  (int)(scoreboardHeight * 0.5) - (heart.GetHeight() /2),
                 heart.GetWidth(), heart.GetHeight()), Color.White);
 
             //Heart3 Icon
-            spriteBatch.Draw(heart.texture, new Rectangle(
+            spriteBatch.Draw((_game.link.LifeCount > 2 ? heart.texture : heartEmpty.texture), new Rectangle(
                 (GameController.ScreenWidth / 2) + (int)((heart.GetWidth() * 1.5f) + 5) - heart.GetWidth(),
                  (int)(scoreboardHeight * 0.5) - (heart.GetHeight() / 2),
                 heart.GetWidth(), heart.GetHeight()), Color.White);
 
             //Heart2 Icon
-            spriteBatch.Draw(heart.texture, new Rectangle(
+            spriteBatch.Draw((_game.link.LifeCount > 1 ? heart.texture : heartEmpty.texture), new Rectangle(
                 (GameController.ScreenWidth / 2) - heart.GetWidth(),
                  (int)(scoreboardHeight * 0.5) - (heart.GetHeight() / 2),
                 heart.GetWidth(), heart.GetHeight()), Color.White);

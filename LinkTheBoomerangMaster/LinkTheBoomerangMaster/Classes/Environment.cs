@@ -18,10 +18,10 @@ namespace LinkTheBoomerangMaster.Classes
         public GameEnvironment(GameController game)
         {
             _game = game;
-            background = new _2DTexture(game.Content.Load<Texture2D>("ground"), GameController.scale);
-            cornerWallBlock = new _2DTexture(game.Content.Load<Texture2D>("cornerBlockBot"), GameController.scale);
-            HorWallTile = new _2DTexture(game.Content.Load<Texture2D>("wall-H"), GameController.scale);
-            VertWallTile = new _2DTexture(game.Content.Load<Texture2D>("wall-V-2"), GameController.scale);
+            background = new _2DTexture(game.Content.Load<Texture2D>("map/ground"), GameController.scale);
+            cornerWallBlock = new _2DTexture(game.Content.Load<Texture2D>("map/cornerBlockBot"), GameController.scale);
+            HorWallTile = new _2DTexture(game.Content.Load<Texture2D>("map/wall-H"), GameController.scale);
+            VertWallTile = new _2DTexture(game.Content.Load<Texture2D>("map/wall-V-2"), GameController.scale);
         }
 
         public void Draw(SpriteBatch spriteBatch)

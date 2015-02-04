@@ -26,15 +26,14 @@ namespace LinkTheBoomerangMaster
 
         public Scoreboard scoreBoard;
 
-        Player link;
+        public Player link;
+
+        public bool SoundOn = true;
+        public bool MusicOn = true;
 
         public static float scale = 1.5f;
 
-        const float BALL_START_SPEED = 8f;
-
-        const float KEYBOARD_PLAYER_SPEED = 10f;
-
-        private Bouncerang boomerang1;
+        private List<Bouncerang> bouncerangs;
 
 
 
@@ -60,14 +59,18 @@ namespace LinkTheBoomerangMaster
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            bouncerangs = new List<Bouncerang>();
             ScreenHeight = GraphicsDevice.Viewport.Height;
             ScreenWidth = GraphicsDevice.Viewport.Width;
-            boomerang1 = new Bouncerang(this);
+            Bouncerang boomerang1 = new Bouncerang(this);
+            boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("projectiles/boom"), scale);
+            bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
             scoreBoard = new Scoreboard(this);
             link = new Player(this);
             Input.link = link;
+            Input.boom = boomerang1;
+
             base.Initialize();
         }
 
@@ -79,8 +82,8 @@ namespace LinkTheBoomerangMaster
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("rupee"),scale);
-            song = Content.Load<Song>("metal-zelda");
+            
+            song = Content.Load<Song>("music/metal-zelda");
             MediaPlayer.IsRepeating = true;
             try
             {
@@ -113,36 +116,12 @@ namespace LinkTheBoomerangMaster
             ScreenWidth = GraphicsDevice.Viewport.Width;
             ScreenHeight = GraphicsDevice.Viewport.Height;
 
-            boomerang1.Move(boomerang1.Velocity);
-
-            Vector2 player1Velocity = Input.GetKeyboardInputDirection(PlayerIndex.One) * KEYBOARD_PLAYER_SPEED;
-
-            link.Move(player1Velocity);
-
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // TODO: Add your game logic here.
-            if(link.isMoving)
-                link.animatedTexture.UpdateFrame(elapsed);
-            boomerang1.animatedTexture.UpdateFrame(elapsed);
-
-            if (GameObject.CheckLinkBoomCollision(link, boomerang1))
+            link.Update(gameTime);
+            foreach(Bouncerang b in bouncerangs)
             {
-                boomerang1.Velocity.Y = Math.Abs(boomerang1.Velocity.Y) *-1;
+                b.Update(gameTime);
+                b.CheckState(link);
             }
-
-            if (!boomerang1.launched)
-            {
-                boomerang1.Launch(BALL_START_SPEED);
-                boomerang1.launched = true;
-            }
-
-            if (boomerang1.Position.Y > ScreenHeight)
-            {
-                boomerang1.Launch(BALL_START_SPEED);
-            }
-                
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -158,7 +137,10 @@ namespace LinkTheBoomerangMaster
 
             spriteBatch.Begin();
 
-            boomerang1.Draw(spriteBatch);
+            foreach (Bouncerang b in bouncerangs)
+            {
+                b.Draw(spriteBatch);
+            }
             
             link.Draw(spriteBatch);
 

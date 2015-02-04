@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace LinkTheBoomerangMaster.Classes
 {
@@ -21,18 +22,46 @@ namespace LinkTheBoomerangMaster.Classes
         {
             random = new Random();
             _game = game;
-            animatedTexture.Load(game.Content, "boom", Frames, FramesPerSec);
+            animatedTexture.Load(game.Content, "projectiles/boom", Frames, FramesPerSec);
             isMoving = true;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if(launched)
+                base.Draw(spriteBatch);            
+        }
+
+        public void Update(GameTime time)
+        {
+            Move(Velocity);
+            animatedTexture.UpdateFrame((float)time.ElapsedGameTime.TotalSeconds);            
+        }
+
+        public void CheckState(Player link)
+        {
+            if (GameObject.CheckLinkBoomCollision(link, this))
+            {
+                this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+            }
+
+            if (this.Position.Y > GameController.ScreenHeight)
+            {
+                link.throwMode = true;
+                this.launched = false;
+                this.Position = new Vector2(0, 0);
+                link.LifeCount -= 1;
+            }
         }
 
         public void Launch(float speed)
         {
-            Position = new Vector2(GameController.ScreenWidth / 2 - Texture.GetWidth() / 2, GameController.ScreenHeight / 2 - Texture.GetHeight() / 2);
+            Position = _game.link.Position;
             // get a random + or - 60 degrees angle to the right
-            float rotation = (float)(Math.PI / 2 + (random.NextDouble() * (Math.PI / 1.5f) - Math.PI / 3));
+            //float rotation = (float)(Math.PI / 2 + (random.NextDouble() * (Math.PI / 1.5f) - Math.PI / 3));
 
-            Velocity.X = (float)Math.Sin(rotation);
-            Velocity.Y = (float)Math.Cos(rotation);
+            Velocity.X = (float)Math.Sin(45);
+            Velocity.Y = (float)Math.Cos(45);
 
             // 50% chance whether it launches left or right
             if (random.Next(2) == 1)
