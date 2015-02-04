@@ -24,7 +24,7 @@ namespace LinkTheBoomerangMaster
 
             Texture._scale = 2;
             Position = new Vector2((GameController.ScreenWidth / 2) - (Texture.GetWidth() / 2), GameController.ScreenHeight - game.environment.HorWallTile.GetHeight() - (int)(GameController.ScreenHeight * 0.01) - Texture.GetHeight());
-            animatedTexture.Load(game.Content, "link", Frames, FramesPerSec);
+            animatedTexture.Load(game.Content, "linkwithpaddle", Frames, FramesPerSec);
         }
 
         public override void Move(Vector2 amount)

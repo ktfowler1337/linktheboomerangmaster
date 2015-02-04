@@ -29,8 +29,6 @@ namespace LinkTheBoomerangMaster.Classes
         private _2DTexture heart;
         private _2DTexture rupee;
 
-        private SpriteFont font;
-        private SpriteFont fontSmaller;
 
         public int scoreboardHeight;
 
@@ -56,42 +54,15 @@ namespace LinkTheBoomerangMaster.Classes
             arrow = new _2DTexture(_game.Content.Load<Texture2D>("singleArrow"), 1.5f);
             potion = new _2DTexture(_game.Content.Load<Texture2D>("potion"), GameController.scale);
             heart = new _2DTexture(_game.Content.Load<Texture2D>("heartFULL"), 2.5f);
-            rupee = new _2DTexture(_game.Content.Load<Texture2D>("rupee"), 1.3f);
-
-            font = _game.Content.Load<SpriteFont>("font");
-            fontSmaller = _game.Content.Load<SpriteFont>("font12");
+            rupee = new _2DTexture(_game.Content.Load<Texture2D>("rupee"), 1);
+        
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {               
             DrawFrame(spriteBatch);
             DrawIcons(spriteBatch);
-            DrawText(spriteBatch);
-        }
 
-        private void DrawText(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Begin();
-
-            //Life Text
-            spriteBatch.DrawString(font, "-Life-", new Vector2((GameController.ScreenWidth / 2) - 53, -5), Color.White);
-
-            //Bomb Count Text
-            spriteBatch.DrawString(fontSmaller, "x 000", new Vector2(GameController.ScreenWidth - 85, -6), Color.White);
-
-            //Arrow Count Text
-            spriteBatch.DrawString(fontSmaller, "x 000", new Vector2(GameController.ScreenWidth - 85, 30), Color.White);
-
-            //Rupee Count Text
-            spriteBatch.DrawString(fontSmaller, "x 000", new Vector2(GameController.ScreenWidth - 85, 65), Color.White);
-
-            //Music ON/OFF Text
-            spriteBatch.DrawString(fontSmaller, "Music: ON", new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.10)), Color.White);
-
-            //Sound ON/OFF Text
-            spriteBatch.DrawString(fontSmaller, "Sound: ON", new Vector2(scoreboardLeftConnectorFrame.GetWidth() + 5, (int)(scoreboardHeight * 0.45)), Color.White);
-
-            spriteBatch.End();
         }
 
         private void DrawIcons(SpriteBatch spriteBatch)
@@ -99,20 +70,20 @@ namespace LinkTheBoomerangMaster.Classes
             spriteBatch.Begin();
             //Bomb Icon
             spriteBatch.Draw(bomb.texture, new Rectangle(
-                GameController.ScreenWidth - scoreboardRightConnectorFrame.GetWidth() - (int)(GameController.ScreenWidth * 0.17) -3,
-                 (int)(scoreboardHeight *0.1),
+                GameController.ScreenWidth - scoreboardRightConnectorFrame.GetWidth() - (int)(GameController.ScreenWidth * 0.13),
+                 (int)(scoreboardHeight *0.2),
                 bomb.GetWidth(), bomb.GetHeight()), Color.White);
 
             //Arrow Icon
             spriteBatch.Draw(arrow.texture, new Rectangle(
-                GameController.ScreenWidth - scoreboardRightConnectorFrame.GetWidth() - (int)(GameController.ScreenWidth * 0.17) -3,
-                 (int)(scoreboardHeight * 0.4 - 2),
+                GameController.ScreenWidth - scoreboardRightConnectorFrame.GetWidth() - (int)(GameController.ScreenWidth * 0.13),
+                 (int)(scoreboardHeight * 0.5),
                 arrow.GetWidth(), arrow.GetHeight()), Color.White);
 
             //Rupee Icon
             spriteBatch.Draw(rupee.texture, new Rectangle(
-                GameController.ScreenWidth - scoreboardRightConnectorFrame.GetWidth() - (int)(GameController.ScreenWidth * 0.17),
-                 (int)(scoreboardHeight * 0.7),
+                GameController.ScreenWidth - scoreboardRightConnectorFrame.GetWidth() - (int)(GameController.ScreenWidth * 0.13),
+                 (int)(scoreboardHeight * 0.8),
                 rupee.GetWidth(), rupee.GetHeight()), Color.White);
 
             //Heart1 Icon
