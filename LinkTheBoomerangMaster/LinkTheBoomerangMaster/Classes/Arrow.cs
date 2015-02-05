@@ -59,9 +59,8 @@ namespace LinkTheBoomerangMaster.Classes
         {
             foreach (Enemy e in _game.Enemies.ToList())
             {
-                if (e.CheckEnemyCollision(this))
+                if (e.CheckEnemyCollision(this) != 0)
                 {
-                    _game.link.RupeeCount += e.rupees;
                     e.KillEnemy();
                     _game.Projectiles.Remove(this);
                     break;

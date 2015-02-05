@@ -13,6 +13,8 @@ namespace LinkTheBoomerangMaster
     {
         public GameController _game;
 
+        public int EnemyDestroyCount = 0;
+
         public const int Frames = 8;
         public const int FramesPerSec = 6;
 
@@ -31,6 +33,8 @@ namespace LinkTheBoomerangMaster
         public int LifeCount = 3;
         public int RupeeCount = 0;
 
+        public Rectangle shield;
+
         public Player(GameController game) : base(2f)
         {
             _game = game;
@@ -42,6 +46,7 @@ namespace LinkTheBoomerangMaster
             Position = new Vector2((GameController.ScreenWidth / 2) - (Texture.GetWidth() / 2), GameController.ScreenHeight - game.environment.HorWallTile.GetHeight() - (int)(GameController.ScreenHeight * 0.01) - Texture.GetHeight());
             animatedTexture.Load(game.Content, "player/linkwithpaddle"+ (GameController.Difficulty == "Normal" ? "" :"small" ), Frames, FramesPerSec);
             throwAni.Load(game.Content, "player/linkwithboom", Frames, FramesPerSec);
+            shield = new Rectangle((int)Position.X, (int)Position.Y, Texture.GetWidth(), 8);
         }
 
 
@@ -67,6 +72,7 @@ namespace LinkTheBoomerangMaster
 
         public void Update(GameTime time)
         {
+            shield = new Rectangle((int)Position.X, (int)Position.Y, Texture.GetWidth(), 8);
             Move(Input.GetKeyboardInputDirection(PlayerIndex.One, _game) * KEYBOARD_PLAYER_SPEED);
             if (isMoving)
             {
@@ -83,6 +89,15 @@ namespace LinkTheBoomerangMaster
                 Position.X = _game.environment.VertWallTile.GetWidth();
             if (Position.X + Texture.GetWidth() >= GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth())
                 Position.X = GameController.ScreenWidth - Texture.GetWidth() - _game.environment.VertWallTile.GetWidth();
+        }
+
+        internal void UpdateKillCount()
+        {
+            EnemyDestroyCount++;
+            if (EnemyDestroyCount == 4)
+                GameController.GameSpeedMultiplier2 = 1.2f;
+            else if(EnemyDestroyCount == 12)
+                GameController.GameSpeedMultiplier2 = 1.5f;
         }
     }
 }

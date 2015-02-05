@@ -156,7 +156,7 @@ namespace LinkTheBoomerangMaster
                     {
                         menu.selectItem.Play(GameController.SoundVolume, 0, 0);
                         if(GameController.GameSpeedMultiplier == 1)
-                            GameController.GameSpeedMultiplier = 1.5f;                        
+                            GameController.GameSpeedMultiplier = 2f;                        
                         else
                             GameController.GameSpeedMultiplier = 1f;
                     }
