@@ -28,9 +28,9 @@ namespace LinkTheBoomerangMaster.Classes
             random = new Random();
             _game = game;
             animatedTexture.Load(game.Content, "projectiles/boom", Frames, FramesPerSec);
-            LaunchSound = game.Content.Load<SoundEffect>("sounds/boom-throw");
-            WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
-            ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
+            //LaunchSound = game.Content.Load<SoundEffect>("sounds/boom-throw");
+            //WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
+            //ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
             isMoving = true;
         }
 
@@ -50,9 +50,19 @@ namespace LinkTheBoomerangMaster.Classes
         {
             if (GameObject.CheckLinkBoomCollision(link, this))
             {
-                ShieldHitSound.Play(GameController.SoundVolume, 0, 0);
+                //ShieldHitSound.Play(GameController.SoundVolume, 0, 0);
                 this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
             }
+
+			foreach (Enemy e in _game.Enemies.ToList()) {
+				if (e.CheckEnemyCollision (this)) {
+					//ADD SOME SOUND EFFECT?
+
+					e.KillEnemy ();
+					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+				}
+			}
+
 
             if (this.Position.Y > GameController.ScreenHeight)
             {
@@ -79,7 +89,7 @@ namespace LinkTheBoomerangMaster.Classes
             }
 
             Velocity *= speed;
-            LaunchSound.Play(GameController.SoundVolume, 0, 0);
+            //LaunchSound.Play(GameController.SoundVolume, 0, 0);
         }
 
         public void CheckWallCollision()
@@ -116,8 +126,8 @@ namespace LinkTheBoomerangMaster.Classes
                 collided = true;
             }
 
-            if (collided && launched)
-                WallHitSound.Play(GameController.SoundVolume, 0, 0);
+            //if (collided && launched)
+                //WallHitSound.Play(GameController.SoundVolume, 0, 0);
         }
 
         public override void Move(Vector2 amount)

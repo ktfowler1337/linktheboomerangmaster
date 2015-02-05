@@ -25,6 +25,8 @@ namespace LinkTheBoomerangMaster
 
         public GameEnvironment environment;
 
+		public Level level;
+
         public Scoreboard scoreBoard;
 
         public Player link;
@@ -40,6 +42,8 @@ namespace LinkTheBoomerangMaster
         private List<Bouncerang> bouncerangs;
 
         public List<GameObject> Projectiles;
+
+		public List<Enemy> Enemies;
 
         public GameController()
             : base()
@@ -66,12 +70,15 @@ namespace LinkTheBoomerangMaster
         {
             bouncerangs = new List<Bouncerang>();
             Projectiles = new List<GameObject>();
+			Enemies = new List<Enemy>();
             ScreenHeight = GraphicsDevice.Viewport.Height;
             ScreenWidth = GraphicsDevice.Viewport.Width;
             Bouncerang boomerang1 = new Bouncerang(this);
             boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("projectiles/boom"), scale);
             bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
+			level = new Level (this);
+			level.Generate_Level (1);
             scoreBoard = new Scoreboard(this);
             link = new Player(this);
             Input.link = link;
@@ -89,13 +96,13 @@ namespace LinkTheBoomerangMaster
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            song = Content.Load<Song>("music/metal-zelda");
-            MediaPlayer.IsRepeating = true;
+            //song = Content.Load<Song>("music/metal-zelda");
+            //MediaPlayer.IsRepeating = true;
             try
             {
-                MediaPlayer.Play(song);
-                if (!MusicOn)
-                    MediaPlayer.Pause();
+            //    MediaPlayer.Play(song);
+            //    if (!MusicOn)
+            //        MediaPlayer.Pause();
             }
             catch
             {
@@ -170,6 +177,10 @@ namespace LinkTheBoomerangMaster
                         a.Draw(spriteBatch);
                     }    
                 }
+			foreach (Enemy e in Enemies) {
+
+				e.Draw (spriteBatch);
+			}
 
                 link.Draw(spriteBatch);
 
