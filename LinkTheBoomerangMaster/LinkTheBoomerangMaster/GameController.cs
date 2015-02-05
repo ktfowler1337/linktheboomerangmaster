@@ -105,17 +105,6 @@ namespace LinkTheBoomerangMaster
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-<<<<<<< HEAD
-            
-            //song = Content.Load<Song>("music/metal-zelda");
-            //MediaPlayer.IsRepeating = true;
-            try
-            {
-            //    MediaPlayer.Play(song);
-            //    if (!MusicOn)
-            //        MediaPlayer.Pause();
-=======
-
             song = Content.Load<Song>("music/metal-zelda");
             Menusong = Content.Load<Song>("music/menu-theme");
             MediaPlayer.IsRepeating = true;
@@ -126,7 +115,6 @@ namespace LinkTheBoomerangMaster
                     MediaPlayer.Pause();
                 if (!SoundOn)
                     SoundVolume = 0f;
->>>>>>> 3df9bb50ee29262ad51d984c004f5bb261bf4f56
             }
             catch
             {
@@ -207,14 +195,12 @@ namespace LinkTheBoomerangMaster
                     Arrow a = (Arrow)p;
                     a.Draw(spriteBatch);
                 }
-<<<<<<< HEAD
+			}
 			foreach (Enemy e in Enemies) {
 
 				e.Draw (spriteBatch);
 			}
-=======
-            }
->>>>>>> 3df9bb50ee29262ad51d984c004f5bb261bf4f56
+
 
             link.Draw(spriteBatch);
 
