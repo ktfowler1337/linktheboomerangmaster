@@ -18,6 +18,7 @@ namespace LinkTheBoomerangMaster.Classes
 
         private SoundEffect LaunchSound;
         private SoundEffect WallHitSound;
+        private SoundEffect EnemyHitSound;
         private SoundEffect ShieldHitSound;
 
         private const int Frames = 4;
@@ -25,11 +26,13 @@ namespace LinkTheBoomerangMaster.Classes
 
         public Bouncerang(GameController game)
         {
+            Position = new Vector2(0, 0);
             random = new Random();
             _game = game;
             animatedTexture.Load(game.Content, "projectiles/boom", Frames, FramesPerSec);
             LaunchSound = game.Content.Load<SoundEffect>("sounds/boom-throw");
             WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
+            EnemyHitSound = game.Content.Load<SoundEffect>("sounds/LA_BowArrow");
             ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
             isMoving = true;
         }
@@ -42,8 +45,11 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void Update(GameTime time)
         {
-            Move(Velocity * GameController.GameSpeedMultiplier);
-            animatedTexture.UpdateFrame((float)time.ElapsedGameTime.TotalSeconds);            
+            if (launched)
+            {
+                Move(Velocity * GameController.GameSpeedMultiplier);
+                animatedTexture.UpdateFrame((float)time.ElapsedGameTime.TotalSeconds);
+            }
         }
 
         public void CheckState(Player link)
@@ -56,8 +62,8 @@ namespace LinkTheBoomerangMaster.Classes
 
 			foreach (Enemy e in _game.Enemies.ToList()) {
 				if (e.CheckEnemyCollision (this)) {
-					//ADD SOME SOUND EFFECT?
-
+                    EnemyHitSound.Play(GameController.SoundVolume,0,0);
+                    link.RupeeCount += e.rupees;
 					e.KillEnemy ();
 					this.Velocity.Y *= -1;
                     break;
@@ -69,7 +75,7 @@ namespace LinkTheBoomerangMaster.Classes
             {
                 link.throwMode = true;
                 this.launched = false;
-                this.Position = new Vector2(50, 50);
+                this.Position = new Vector2(500, 500);
                 link.LifeCount -= 1;
             }
         }

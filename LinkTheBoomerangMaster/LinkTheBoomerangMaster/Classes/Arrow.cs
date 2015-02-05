@@ -57,6 +57,16 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void CheckEnemyCollision()
         {
+            foreach (Enemy e in _game.Enemies.ToList())
+            {
+                if (e.CheckEnemyCollision(this))
+                {
+                    _game.link.RupeeCount += e.rupees;
+                    e.KillEnemy();
+                    _game.Projectiles.Remove(this);
+                    break;
+                }
+            }
             if (this.Position.Y <= _game.scoreBoard.scoreboardHeight)
             {
                 if (Visible)

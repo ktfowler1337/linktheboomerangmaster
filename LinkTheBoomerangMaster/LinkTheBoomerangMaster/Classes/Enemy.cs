@@ -53,7 +53,7 @@ namespace LinkTheBoomerangMaster
 			base.Draw(spriteBatch);
 		}
 
-		public bool CheckEnemyCollision(Bouncerang boom)
+		public bool CheckEnemyCollision(GameObject boom)
 		{
 			if (this.Bounds.Intersects(boom.Bounds))
 				return true;

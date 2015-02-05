@@ -19,15 +19,17 @@ namespace LinkTheBoomerangMaster
 		{
 			if (level==1)
 			{
-				for (int x=25; x < 675; x=x+EnemyWidth) {
+				for (int x=25; x < 550; x=x+EnemyWidth) {
 					Enemy temp = new Enemy(_game, x, 120, "wizard");
 				}
 
-				for (int x=25; x < 675; x=x+EnemyWidth) {
+                for (int x = 25; x < 550; x = x + EnemyWidth)
+                {
 					Enemy temp = new Enemy(_game, x, 120 +(EnemyHeight), "archer");
 				}
 
-				for (int x=25; x < 675; x=x+EnemyWidth) {
+                for (int x = 25; x < 550; x = x + EnemyWidth)
+                {
 					Enemy temp = new Enemy(_game, x, 120 +(EnemyHeight*2), "soldier");
 				}
 			}

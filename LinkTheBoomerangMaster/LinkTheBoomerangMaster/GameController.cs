@@ -60,7 +60,7 @@ namespace LinkTheBoomerangMaster
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             SoundEffect.MasterVolume = 1f;
-            graphics.PreferredBackBufferWidth = 572;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferWidth = 600;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight = 700;   // set this value to the desired height of your window
             graphics.ApplyChanges();
 
@@ -154,11 +154,11 @@ namespace LinkTheBoomerangMaster
                     b.Update(gameTime);
                     b.CheckState(link);
                 }
-                foreach (GameObject p in Projectiles)
+                for(int x = 0; x < Projectiles.Count; x++) 
                 {
-                    if (p is Arrow)
+                    if (Projectiles[x] is Arrow)
                     {
-                        Arrow a = (Arrow)p;
+                        Arrow a = (Arrow)Projectiles[x];
                         a.Update(gameTime);
                     }
                 }
