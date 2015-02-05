@@ -28,9 +28,9 @@ namespace LinkTheBoomerangMaster.Classes
             random = new Random();
             _game = game;
             animatedTexture.Load(game.Content, "projectiles/boom", Frames, FramesPerSec);
-            //LaunchSound = game.Content.Load<SoundEffect>("sounds/boom-throw");
-            //WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
-            //ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
+            LaunchSound = game.Content.Load<SoundEffect>("sounds/boom-throw");
+            WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
+            ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
             isMoving = true;
         }
 
@@ -50,7 +50,7 @@ namespace LinkTheBoomerangMaster.Classes
         {
             if (GameObject.CheckLinkBoomCollision(link, this))
             {
-                //ShieldHitSound.Play(GameController.SoundVolume, 0, 0);
+                ShieldHitSound.Play(GameController.SoundVolume, 0, 0);
                 this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
             }
 
@@ -59,7 +59,8 @@ namespace LinkTheBoomerangMaster.Classes
 					//ADD SOME SOUND EFFECT?
 
 					e.KillEnemy ();
-					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+					this.Velocity.Y *= -1;
+                    break;
 				}
 			}
 
@@ -88,13 +89,8 @@ namespace LinkTheBoomerangMaster.Classes
                 Velocity.X *= -1; //launch to the left
             }
 
-<<<<<<< HEAD
-            Velocity *= speed;
-            //LaunchSound.Play(GameController.SoundVolume, 0, 0);
-=======
             Velocity *= (speed );
             LaunchSound.Play(GameController.SoundVolume, 0, 0);
->>>>>>> 3df9bb50ee29262ad51d984c004f5bb261bf4f56
         }
 
         public void CheckWallCollision()
@@ -131,8 +127,8 @@ namespace LinkTheBoomerangMaster.Classes
                 collided = true;
             }
 
-            //if (collided && launched)
-                //WallHitSound.Play(GameController.SoundVolume, 0, 0);
+            if (collided && launched)
+                WallHitSound.Play(GameController.SoundVolume, 0, 0);
         }
 
         public override void Move(Vector2 amount)

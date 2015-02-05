@@ -23,8 +23,8 @@ namespace LinkTheBoomerangMaster.Classes
         public Arrow(GameController game)
         {
             Position = new Vector2(10, 10);
-            //LaunchSound = game.Content.Load<SoundEffect>("sounds/LA_BowArrow");
-            //WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
+            LaunchSound = game.Content.Load<SoundEffect>("sounds/LA_BowArrow");
+            WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
             _game = game;
             Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/arrow"), 2);
             game.Projectiles.Add(this);
@@ -50,7 +50,7 @@ namespace LinkTheBoomerangMaster.Classes
             Velocity.Y = (float)Math.Cos(90);
 
             Velocity *= ARROW_START_SPEED;
-            //LaunchSound.Play(GameController.SoundVolume, 0, 0);
+            LaunchSound.Play(GameController.SoundVolume, 0, 0);
         }
 
         
@@ -60,7 +60,7 @@ namespace LinkTheBoomerangMaster.Classes
             if (this.Position.Y <= _game.scoreBoard.scoreboardHeight)
             {
                 if (Visible)
-                    //WallHitSound.Play(GameController.SoundVolume, 0, 0);
+                    WallHitSound.Play(GameController.SoundVolume, 0, 0);
                 Visible = false;
             }
         }
