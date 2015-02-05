@@ -26,6 +26,7 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            int temp = VertWallTile.GetWidth();
             //background
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
 

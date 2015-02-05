@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace LinkTheBoomerangMaster
 {
@@ -14,8 +15,10 @@ namespace LinkTheBoomerangMaster
     {
         static Input()
         {
-
+            
         }
+
+        
         public static Player link;
         public static Bouncerang boom;
         const float BALL_START_SPEED = 8f;
@@ -23,30 +26,26 @@ namespace LinkTheBoomerangMaster
 
         static KeyboardState currentKB, previousKB;
 
-        public static void CheckKeyboardInput()
+        public static void CheckKeyboardInput(GameMenu menu)
         {
             previousKB = currentKB;
             currentKB = Keyboard.GetState();
             if (currentKB.IsKeyUp(Keys.Escape) && previousKB.IsKeyDown(Keys.Escape))
             {
+                MediaPlayer.Stop();
+                if(GameController.MusicOn)
+                    MediaPlayer.Play(GameController.Menusong);
+                menu.menuOpen.Play(GameController.SoundVolume,0,0);
                 GameController.Paused = !GameController.Paused;
-                if(GameController.Paused)
-                {
-                    // do stuff
-                }
-                else
-                {
-                    //do stuff
-                }
             }
 
             if (currentKB.IsKeyUp(Keys.M) && previousKB.IsKeyDown(Keys.M))
             {
                 GameController.MusicOn = !GameController.MusicOn;
                 if (GameController.MusicOn)
-                    MediaPlayer.Resume();
+                    MediaPlayer.Play(GameController.song);
                 else
-                    MediaPlayer.Pause();
+                    MediaPlayer.Stop();
             }
 
             if (currentKB.IsKeyUp(Keys.N) && previousKB.IsKeyDown(Keys.N))
@@ -57,6 +56,165 @@ namespace LinkTheBoomerangMaster
                 else
                     GameController.SoundVolume = 0;
             }
+        }
+
+        public static void MenuInput(GameMenu menu)
+        {
+            previousKB = currentKB;
+            currentKB = Keyboard.GetState();
+            if (currentKB.IsKeyUp(Keys.Escape) && previousKB.IsKeyDown(Keys.Escape))
+            {
+                if (menu.currentMenu == "Start")
+                {
+                    GameController.Paused = false;
+                    MediaPlayer.Stop();
+                    if(GameController.MusicOn)
+                        MediaPlayer.Play(GameController.song);
+                }
+                else if (menu.currentMenu == "About" || menu.currentMenu == "Info" || menu.currentMenu == "Controls")
+                {
+                    menu.currentMenu = "Help";
+                }
+                else
+                {
+                    menu.currentMenu = "Start";
+                }
+                menu.menuClose.Play(GameController.SoundVolume, 0, 0);
+                menu.Selected = 1;
+            }
+            else if (currentKB.IsKeyUp(Keys.Enter) && previousKB.IsKeyDown(Keys.Enter))
+            {
+                if (menu.currentMenu == "Start")
+                {
+                    if (menu.Selected == 1)
+                    {
+                        menu.currentMenu = "File";
+                    }
+                    else if (menu.Selected == 2)
+                    {
+                        menu.currentMenu = "Tools";
+                    }
+                    else
+                    {
+                        menu.currentMenu = "Help";
+                    }
+                    menu.Selected = 1;
+                }
+                else if (menu.currentMenu == "File")
+                {
+                    if (menu.Selected == 1)
+                    {
+                        link._game.ResetGame();
+                    }
+                    else if (menu.Selected == 2)
+                    {
+                        link._game.Exit();
+                    }
+                }
+                else if(menu.currentMenu == "Help")
+                {
+                    if (menu.Selected == 1)
+                    {
+                        menu.currentMenu = "About";
+                    }
+                    else if (menu.Selected == 2)
+                    {
+                        menu.currentMenu = "Info";
+                    }
+                    else if (menu.Selected == 3)
+                    {
+                        menu.currentMenu = "Controls";
+                    }
+                    menu.Selected = 1;
+                }
+                menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+
+            }
+            else if (currentKB.IsKeyUp(Keys.W) && previousKB.IsKeyDown(Keys.W))
+            {
+                menu.menuMove.Play(GameController.SoundVolume, 0, 0);
+                int max = menu.currentMenu == "File" ? 2 : 3;
+                if (menu.Selected != 1)
+                    menu.Selected -= 1;
+                else
+                    menu.Selected = max;
+            }
+            else if (currentKB.IsKeyUp(Keys.S) && previousKB.IsKeyDown(Keys.S))
+            {
+                menu.menuMove.Play(GameController.SoundVolume, 0, 0);
+                int max = menu.currentMenu == "File" ? 2 : 3;
+                if (menu.Selected != max)
+                    menu.Selected += 1;
+                else
+                    menu.Selected = 1;
+            }
+            else if (currentKB.IsKeyUp(Keys.A) && previousKB.IsKeyDown(Keys.A))
+            {
+                if(menu.currentMenu == "Tools")
+                {
+                    if(menu.Selected == 1)
+                    {
+                        menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+                        if(GameController.GameSpeedMultiplier == 1)
+                            GameController.GameSpeedMultiplier = 1.5f;                        
+                        else
+                            GameController.GameSpeedMultiplier = 1f;
+                    }
+                    else if (menu.Selected == 2 && GameController.pointsToWin != 0)
+                    {
+                        menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+                        GameController.pointsToWin -= 1;
+                    }
+                    else if (menu.Selected == 3)
+                    {
+                        menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+                        if (GameController.Difficulty == "Normal")
+                        {
+                            GameController.Difficulty = "Hard";
+                        }
+                        else
+                        {
+                            GameController.Difficulty = "Normal";
+                        }
+                        link.animatedTexture.Load(link._game.Content, "player/linkwithpaddle" + (GameController.Difficulty == "Normal" && !link.hasHitTheRoof ? "" : "small"), Player.Frames, Player.FramesPerSec);
+                        link.Texture = new _2DTexture(link._game.Content.Load<Texture2D>("player/linkidle" + (GameController.Difficulty == "Normal" && !link.hasHitTheRoof ? "" : "small")), 2);
+                    }
+                }
+            }
+            else if (currentKB.IsKeyUp(Keys.D) && previousKB.IsKeyDown(Keys.D))
+            {
+                if (menu.currentMenu == "Tools")
+                {
+                    if (menu.Selected == 1)
+                    {
+                        menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+                        if (GameController.GameSpeedMultiplier == 1)
+                            GameController.GameSpeedMultiplier = 1.5f;
+                        else
+                            GameController.GameSpeedMultiplier = 1f;
+                    }
+                    else if (menu.Selected == 2)
+                    {
+                        menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+                        GameController.pointsToWin += 1;
+                    }
+                    else if (menu.Selected == 3)
+                    {
+                        menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+                        if (GameController.Difficulty == "Normal")
+                        {
+                            GameController.Difficulty = "Hard";                            
+                        }
+                        else
+                        {
+                            GameController.Difficulty = "Normal";
+                        }
+                        link.animatedTexture.Load(link._game.Content, "player/linkwithpaddle" + (GameController.Difficulty == "Normal" && !link.hasHitTheRoof ? "" : "small"), Player.Frames, Player.FramesPerSec);
+                        link.Texture = new _2DTexture(link._game.Content.Load<Texture2D>("player/linkidle" + (GameController.Difficulty == "Normal" && !link.hasHitTheRoof ? "" : "small")), 2);
+                    }
+                }
+            }
+            
         }
 
 
@@ -81,9 +239,9 @@ namespace LinkTheBoomerangMaster
                     link.isMoving = false;
                 }
 
-                if(link.ArrowCount > 0)
+                if (link.ArrowCount > 0)
                 {
-                    
+
                     if (keyboardState.IsKeyDown(Keys.Q))
                     {
                         ArrowButtonPressed = true;
@@ -97,7 +255,7 @@ namespace LinkTheBoomerangMaster
                     }
                 }
 
-                if(link.throwMode)
+                if (link.throwMode)
                 {
                     if (keyboardState.IsKeyDown(Keys.Space))
                     {

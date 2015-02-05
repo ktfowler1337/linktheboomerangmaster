@@ -42,7 +42,7 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void Update(GameTime time)
         {
-            Move(Velocity);
+            Move(Velocity * GameController.GameSpeedMultiplier);
             animatedTexture.UpdateFrame((float)time.ElapsedGameTime.TotalSeconds);            
         }
 
@@ -88,8 +88,13 @@ namespace LinkTheBoomerangMaster.Classes
                 Velocity.X *= -1; //launch to the left
             }
 
+<<<<<<< HEAD
             Velocity *= speed;
             //LaunchSound.Play(GameController.SoundVolume, 0, 0);
+=======
+            Velocity *= (speed );
+            LaunchSound.Play(GameController.SoundVolume, 0, 0);
+>>>>>>> 3df9bb50ee29262ad51d984c004f5bb261bf4f56
         }
 
         public void CheckWallCollision()

@@ -36,11 +36,11 @@ namespace LinkTheBoomerangMaster
             _game = game;
 
             throwAni = new AnimatedTexture(Position, 0, 2, 0.5f);
-            Texture = new _2DTexture(game.Content.Load<Texture2D>("player/linkidle"), GameController.scale);
+            Texture = new _2DTexture(game.Content.Load<Texture2D>("player/linkidle" + (GameController.Difficulty == "Normal" ? "" : "small")), GameController.scale);
             throwIdle = new _2DTexture(game.Content.Load<Texture2D>("player/linkidlewithboom"), 2);
             Texture._scale = 2;
             Position = new Vector2((GameController.ScreenWidth / 2) - (Texture.GetWidth() / 2), GameController.ScreenHeight - game.environment.HorWallTile.GetHeight() - (int)(GameController.ScreenHeight * 0.01) - Texture.GetHeight());
-            animatedTexture.Load(game.Content, "player/linkwithpaddle", Frames, FramesPerSec);
+            animatedTexture.Load(game.Content, "player/linkwithpaddle"+ (GameController.Difficulty == "Normal" ? "" :"small" ), Frames, FramesPerSec);
             throwAni.Load(game.Content, "player/linkwithboom", Frames, FramesPerSec);
         }
 

@@ -13,7 +13,7 @@ namespace LinkTheBoomerangMaster.Classes
     {
         Vector2 Velocity;
         GameController _game;
-        const float ARROW_START_SPEED = 12f;
+        const float ARROW_START_SPEED = 25f;
 
         SoundEffect LaunchSound;
         SoundEffect WallHitSound;

@@ -16,12 +16,15 @@ namespace LinkTheBoomerangMaster
     /// </summary>
     public class GameController : Game
     {
-        protected Song song;
+        static public Song song;
+        static public Song Menusong;
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public static int ScreenWidth;
         public static int ScreenHeight;
+
+        GameMenu menu;
 
         public GameEnvironment environment;
 
@@ -31,13 +34,19 @@ namespace LinkTheBoomerangMaster
 
         public Player link;
 
+        public static uint pointsToWin = 25;
+
+        public static string Difficulty = "Normal";
+
         public static bool Paused = false;
 
-        public static bool SoundOn = true;
+        public static bool SoundOn = false;
         public static float SoundVolume = 0.8f;
-        public static bool MusicOn = true;
+        public static bool MusicOn = false;
 
         public static float scale = 1.5f;
+
+        public static float GameSpeedMultiplier = 1f;
 
         private List<Bouncerang> bouncerangs;
 
@@ -51,7 +60,7 @@ namespace LinkTheBoomerangMaster
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             SoundEffect.MasterVolume = 1f;
-            graphics.PreferredBackBufferWidth = 575;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferWidth = 572;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight = 700;   // set this value to the desired height of your window
             graphics.ApplyChanges();
 
@@ -68,6 +77,7 @@ namespace LinkTheBoomerangMaster
         /// </summary>
         protected override void Initialize()
         {
+            menu = new GameMenu(this);
             bouncerangs = new List<Bouncerang>();
             Projectiles = new List<GameObject>();
 			Enemies = new List<Enemy>();
@@ -95,6 +105,7 @@ namespace LinkTheBoomerangMaster
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+<<<<<<< HEAD
             
             //song = Content.Load<Song>("music/metal-zelda");
             //MediaPlayer.IsRepeating = true;
@@ -103,6 +114,19 @@ namespace LinkTheBoomerangMaster
             //    MediaPlayer.Play(song);
             //    if (!MusicOn)
             //        MediaPlayer.Pause();
+=======
+
+            song = Content.Load<Song>("music/metal-zelda");
+            Menusong = Content.Load<Song>("music/menu-theme");
+            MediaPlayer.IsRepeating = true;
+            try
+            {
+                MediaPlayer.Play(song);
+                if (!MusicOn)
+                    MediaPlayer.Pause();
+                if (!SoundOn)
+                    SoundVolume = 0f;
+>>>>>>> 3df9bb50ee29262ad51d984c004f5bb261bf4f56
             }
             catch
             {
@@ -128,9 +152,11 @@ namespace LinkTheBoomerangMaster
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Paused = !Paused;
-            Input.CheckKeyboardInput();
+
+            
             if (!Paused)
             {
+                Input.CheckKeyboardInput(menu);
                 ScreenWidth = GraphicsDevice.Viewport.Width;
                 ScreenHeight = GraphicsDevice.Viewport.Height;
 
@@ -142,14 +168,18 @@ namespace LinkTheBoomerangMaster
                 }
                 foreach (GameObject p in Projectiles)
                 {
-                    if(p is Arrow)
+                    if (p is Arrow)
                     {
                         Arrow a = (Arrow)p;
                         a.Update(gameTime);
-                    }                    
+                    }
                 }
 
                 base.Update(gameTime);
+            }
+            else
+            {
+                Input.MenuInput(menu);
             }
         }
 
@@ -159,37 +189,49 @@ namespace LinkTheBoomerangMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-                environment.Draw(spriteBatch);
-                scoreBoard.Draw(spriteBatch);
+            
+            environment.Draw(spriteBatch);
+            scoreBoard.Draw(spriteBatch);
 
-                spriteBatch.Begin();
+            spriteBatch.Begin();
 
-                foreach (Bouncerang b in bouncerangs)
+            foreach (Bouncerang b in bouncerangs)
+            {
+                b.Draw(spriteBatch);
+            }
+
+            foreach (GameObject p in Projectiles)
+            {
+                if (p is Arrow)
                 {
-                    b.Draw(spriteBatch);
+                    Arrow a = (Arrow)p;
+                    a.Draw(spriteBatch);
                 }
-
-                foreach (GameObject p in Projectiles)
-                {
-                    if (p is Arrow)
-                    {
-                        Arrow a = (Arrow)p;
-                        a.Draw(spriteBatch);
-                    }    
-                }
+<<<<<<< HEAD
 			foreach (Enemy e in Enemies) {
 
 				e.Draw (spriteBatch);
 			}
+=======
+            }
+>>>>>>> 3df9bb50ee29262ad51d984c004f5bb261bf4f56
 
-                link.Draw(spriteBatch);
+            link.Draw(spriteBatch);
 
-                spriteBatch.End();
+            spriteBatch.End();
+            if (Paused)
+                menu.Draw(spriteBatch);
 
-                // TODO: Add your drawing code here    
+            // TODO: Add your drawing code here    
 
-                base.Draw(gameTime);
-            
+            base.Draw(gameTime);
+
+        }
+
+        internal void ResetGame()
+        {
+            Initialize();
+            LoadContent();
         }
     }
 }
