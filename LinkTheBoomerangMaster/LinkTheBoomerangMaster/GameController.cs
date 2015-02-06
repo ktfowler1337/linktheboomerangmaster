@@ -96,7 +96,7 @@ namespace LinkTheBoomerangMaster
             bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
 			level = new Level (this);
-			level.Generate_Level (1);
+			level.Generate_Level (2);
             scoreBoard = new Scoreboard(this);
             link = new Player(this);
             Input.link = link;
