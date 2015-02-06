@@ -9,6 +9,9 @@ namespace LinkTheBoomerangMaster
 		private int EnemyWidth = 50;
 		Random random;
 
+        public bool WizardHit = false;
+        public bool ArcherHit = false;
+
 		public Level (GameController game)
 		{
 			_game = game;

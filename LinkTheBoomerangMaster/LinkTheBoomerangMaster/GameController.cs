@@ -40,13 +40,15 @@ namespace LinkTheBoomerangMaster
 
         public static bool Paused = false;
 
-        public static bool SoundOn = false;
+        public static bool SoundOn = true;
         public static float SoundVolume = 0.8f;
-        public static bool MusicOn = false;
+        public static bool MusicOn = true;
 
         public static float scale = 1.5f;
 
         public static float GameSpeedMultiplier = 1f;
+
+        public static float GameSpeedMultiplier2 = 1f;
 
         private List<Bouncerang> bouncerangs;
 

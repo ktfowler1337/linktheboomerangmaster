@@ -52,7 +52,7 @@ namespace LinkTheBoomerangMaster
 
         public static bool CheckLinkBoomCollision(Player player, Bouncerang boom)
         {
-            if (player.Bounds.Intersects(boom.Bounds))
+            if (player.shield.Intersects(boom.Bounds))
                 return true;
             return false;
         }

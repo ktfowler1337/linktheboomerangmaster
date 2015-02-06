@@ -47,7 +47,7 @@ namespace LinkTheBoomerangMaster.Classes
         {
             if (launched)
             {
-                Move(Velocity * GameController.GameSpeedMultiplier);
+                Move((Velocity * GameController.GameSpeedMultiplier) * GameController.GameSpeedMultiplier2);
                 animatedTexture.UpdateFrame((float)time.ElapsedGameTime.TotalSeconds);
             }
         }
@@ -61,13 +61,21 @@ namespace LinkTheBoomerangMaster.Classes
             }
 
 			foreach (Enemy e in _game.Enemies.ToList()) {
-				if (e.CheckEnemyCollision (this)) {
-                    EnemyHitSound.Play(GameController.SoundVolume,0,0);
-                    link.RupeeCount += e.rupees;
-					e.KillEnemy ();
-					this.Velocity.Y *= -1;
+                int collisionResult = e.CheckEnemyCollision(this);
+                if(collisionResult != 0)
+                {
+                    EnemyHitSound.Play(GameController.SoundVolume, 0, 0);
+                    e.KillEnemy();
+                    if(collisionResult == 1)
+                    {
+                        this.Velocity.X *= -1;
+                    }
+                    else
+                    {
+                        this.Velocity.Y *= -1;
+                    }
                     break;
-				}
+                }
 			}
 
 
