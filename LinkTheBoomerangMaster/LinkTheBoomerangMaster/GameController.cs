@@ -1,4 +1,6 @@
-﻿#region Using Statements
+﻿//Leave this defined unless your name is adrian on Ubuntu lol
+#define PLAY_SOUND
+#region Using Statements
 using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -9,6 +11,8 @@ using System;
 using System.Collections.Generic;
 #endregion
 
+
+
 namespace LinkTheBoomerangMaster
 {
     /// <summary>
@@ -16,8 +20,10 @@ namespace LinkTheBoomerangMaster
     /// </summary>
     public class GameController : Game
     {
+		#if PLAY_SOUND
         static public Song song;
         static public Song Menusong;
+		#endif
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -107,21 +113,23 @@ namespace LinkTheBoomerangMaster
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            song = Content.Load<Song>("music/metal-zelda");
-            Menusong = Content.Load<Song>("music/menu-theme");
-            MediaPlayer.IsRepeating = true;
-            try
-            {
-                MediaPlayer.Play(song);
-                if (!MusicOn)
-                    MediaPlayer.Pause();
-                if (!SoundOn)
-                    SoundVolume = 0f;
-            }
-            catch
-            {
+            #if PLAY_SOUND
+                song = Content.Load<Song>("music/metal-zelda");
+                Menusong = Content.Load<Song>("music/menu-theme");
+                MediaPlayer.IsRepeating = true;
+                try
+                {
+                    MediaPlayer.Play(song);
+                    if (!MusicOn)
+                        MediaPlayer.Pause();
+                    if (!SoundOn)
+                        SoundVolume = 0f;
+                }
+                catch
+                {
 
-            }
+                }
+            #endif
         }
 
         /// <summary>

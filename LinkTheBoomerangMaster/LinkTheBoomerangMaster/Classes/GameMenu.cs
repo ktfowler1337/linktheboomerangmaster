@@ -42,12 +42,12 @@ namespace LinkTheBoomerangMaster.Classes
         public GameMenu(GameController game)
         {
             _game = game;
-
+			#if PLAY_SOUND
             selectItem = game.Content.Load<SoundEffect>("sounds/selectOption");
             menuMove = game.Content.Load<SoundEffect>("sounds/moveCursor");
             menuOpen = game.Content.Load<SoundEffect>("sounds/menuOpen");
             menuClose = game.Content.Load<SoundEffect>("sounds/menuClose");
-
+			#endif
             menuBackground = _game.Content.Load<Texture2D>("scoreboard/blackdot");
 
             menuTopLeftCornerFrame = new _2DTexture(_game.Content.Load<Texture2D>("scoreboard/frameLeftTopCorner"), GameController.scale);
