@@ -1,5 +1,5 @@
 ﻿//Leave this defined unless your name is adrian on Ubuntu lol
-#define PLAY_SOUND
+//#define PLAY_SOUND
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;

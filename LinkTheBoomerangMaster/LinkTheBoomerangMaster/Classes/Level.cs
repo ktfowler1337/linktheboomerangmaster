@@ -7,6 +7,8 @@ namespace LinkTheBoomerangMaster
 		private GameController _game;
 		private int EnemyHeight = 40;
 		private int EnemyWidth = 50;
+		private int GameWidth = 550;
+		private int GameTopHeight = 120;
 		Random random;
 
         public bool WizardHit = false;
@@ -20,21 +22,54 @@ namespace LinkTheBoomerangMaster
 
 		public void Generate_Level(int level)
 		{
-			if (level==1)
+			if (level == 1) {
+				Create_Row ("wizard", 0);
+				Create_Row ("archer", 1);
+				Create_Row ("soldier", 2);
+			} else {
+				Random_Level (level + 2);
+			}
+		}
+
+		public void Random_Level(int numberOfRows)
+		{
+
+			for(int row = 0; row < numberOfRows; row++)
 			{
-				for (int x=25; x < 550; x=x+EnemyWidth) {
-					Enemy temp = new Enemy(_game, x, 120, "wizard");
+				Create_Row("random", row);
+			}
+		}
+
+		public void Create_Row(string rowType, int rowNumber)
+		{
+			int typePicker = 0;
+			string classPicker = "";
+			//if soldier create row of soldiers
+			if (rowType != "random") {
+				for (int x=25; x < GameWidth; x=x+EnemyWidth) {
+					Enemy temp = new Enemy (_game, x, GameTopHeight + (EnemyHeight * (rowNumber)), rowType);
+				}
+			} else {
+
+				for (int x=25; x < GameWidth; x=x+EnemyWidth) {
+					typePicker = random.Next (1, 10);
+					if (typePicker <= 3) {
+						classPicker = "soldier";
+					}
+					if(typePicker >3 && typePicker <= 6){
+						classPicker = "archer";
+					}
+					if(typePicker > 6 && typePicker <= 8){
+						classPicker = "wizard";
+					}
+					if(typePicker <= 8){
+						Enemy temp = new Enemy (_game, x, GameTopHeight + (EnemyHeight * (rowNumber)), classPicker);
+					}
+
 				}
 
-                for (int x = 25; x < 550; x = x + EnemyWidth)
-                {
-					Enemy temp = new Enemy(_game, x, 120 +(EnemyHeight), "archer");
-				}
-
-                for (int x = 25; x < 550; x = x + EnemyWidth)
-                {
-					Enemy temp = new Enemy(_game, x, 120 +(EnemyHeight*2), "soldier");
-				}
+			
+			
 			}
 		}
 	}
