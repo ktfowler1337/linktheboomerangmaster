@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 
+
 namespace LinkTheBoomerangMaster.Classes
 {
     public class Arrow : GameObject
@@ -23,8 +24,10 @@ namespace LinkTheBoomerangMaster.Classes
         public Arrow(GameController game)
         {
             Position = new Vector2(10, 10);
+			#if PLAY_SOUND
             LaunchSound = game.Content.Load<SoundEffect>("sounds/LA_BowArrow");
             WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
+			#endif
             _game = game;
             Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/arrow"), 2);
             game.Projectiles.Add(this);
@@ -50,7 +53,9 @@ namespace LinkTheBoomerangMaster.Classes
             Velocity.Y = (float)Math.Cos(90);
 
             Velocity *= ARROW_START_SPEED;
+			#if PLAY_SOUND
             LaunchSound.Play(GameController.SoundVolume, 0, 0);
+#endif
         }
 
         
@@ -68,8 +73,11 @@ namespace LinkTheBoomerangMaster.Classes
             }
             if (this.Position.Y <= _game.scoreBoard.scoreboardHeight)
             {
+				#if PLAY_SOUND
                 if (Visible)
-                    WallHitSound.Play(GameController.SoundVolume, 0, 0);
+
+                    //WallHitSound.Play(GameController.SoundVolume, 0, 0);
+				#endif
                 Visible = false;
             }
         }

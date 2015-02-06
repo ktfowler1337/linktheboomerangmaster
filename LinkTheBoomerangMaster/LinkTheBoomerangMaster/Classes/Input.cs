@@ -32,20 +32,25 @@ namespace LinkTheBoomerangMaster
             currentKB = Keyboard.GetState();
             if (currentKB.IsKeyUp(Keys.Escape) && previousKB.IsKeyDown(Keys.Escape))
             {
+				#if PLAY_SOUND
                 MediaPlayer.Stop();
                 if(GameController.MusicOn)
+
                     MediaPlayer.Play(GameController.Menusong);
                 menu.menuOpen.Play(GameController.SoundVolume,0,0);
+				#endif
                 GameController.Paused = !GameController.Paused;
             }
 
             if (currentKB.IsKeyUp(Keys.M) && previousKB.IsKeyDown(Keys.M))
             {
+				#if PLAY_SOUND
                 GameController.MusicOn = !GameController.MusicOn;
                 if (GameController.MusicOn)
                     MediaPlayer.Play(GameController.song);
                 else
                     MediaPlayer.Stop();
+				#endif
             }
 
             if (currentKB.IsKeyUp(Keys.N) && previousKB.IsKeyDown(Keys.N))
@@ -68,8 +73,10 @@ namespace LinkTheBoomerangMaster
                 {
                     GameController.Paused = false;
                     MediaPlayer.Stop();
+					#if PLAY_SOUND
                     if(GameController.MusicOn)
                         MediaPlayer.Play(GameController.song);
+					#endif
                 }
                 else if (menu.currentMenu == "About" || menu.currentMenu == "Info" || menu.currentMenu == "Controls")
                 {
@@ -79,7 +86,9 @@ namespace LinkTheBoomerangMaster
                 {
                     menu.currentMenu = "Start";
                 }
+				#if PLAY_SOUND
                 menu.menuClose.Play(GameController.SoundVolume, 0, 0);
+				#endif
                 menu.Selected = 1;
             }
             else if (currentKB.IsKeyUp(Keys.Enter) && previousKB.IsKeyDown(Keys.Enter))
@@ -127,12 +136,15 @@ namespace LinkTheBoomerangMaster
                     }
                     menu.Selected = 1;
                 }
+				#if PLAY_SOUND
                 menu.selectItem.Play(GameController.SoundVolume, 0, 0);
-
+				#endif
             }
             else if (currentKB.IsKeyUp(Keys.W) && previousKB.IsKeyDown(Keys.W))
             {
+				#if PLAY_SOUND
                 menu.menuMove.Play(GameController.SoundVolume, 0, 0);
+				#endif
                 int max = menu.currentMenu == "File" ? 2 : 3;
                 if (menu.Selected != 1)
                     menu.Selected -= 1;
@@ -141,7 +153,9 @@ namespace LinkTheBoomerangMaster
             }
             else if (currentKB.IsKeyUp(Keys.S) && previousKB.IsKeyDown(Keys.S))
             {
+				#if PLAY_SOUND
                 menu.menuMove.Play(GameController.SoundVolume, 0, 0);
+				#endif
                 int max = menu.currentMenu == "File" ? 2 : 3;
                 if (menu.Selected != max)
                     menu.Selected += 1;
@@ -154,7 +168,9 @@ namespace LinkTheBoomerangMaster
                 {
                     if(menu.Selected == 1)
                     {
+						#if PLAY_SOUND
                         menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+						#endif
                         if(GameController.GameSpeedMultiplier == 1)
                             GameController.GameSpeedMultiplier = 2f;                        
                         else
@@ -162,12 +178,16 @@ namespace LinkTheBoomerangMaster
                     }
                     else if (menu.Selected == 2 && GameController.pointsToWin != 0)
                     {
+						#if PLAY_SOUND
                         menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+						#endif
                         GameController.pointsToWin -= 1;
                     }
                     else if (menu.Selected == 3)
                     {
+						#if PLAY_SOUND
                         menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+						#endif
                         if (GameController.Difficulty == "Normal")
                         {
                             GameController.Difficulty = "Hard";
@@ -187,7 +207,9 @@ namespace LinkTheBoomerangMaster
                 {
                     if (menu.Selected == 1)
                     {
+						#if PLAY_SOUND
                         menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+						#endif
                         if (GameController.GameSpeedMultiplier == 1)
                             GameController.GameSpeedMultiplier = 1.5f;
                         else
@@ -195,12 +217,16 @@ namespace LinkTheBoomerangMaster
                     }
                     else if (menu.Selected == 2)
                     {
+						#if PLAY_SOUND
                         menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+						#endif
                         GameController.pointsToWin += 1;
                     }
                     else if (menu.Selected == 3)
                     {
+						#if PLAY_SOUND
                         menu.selectItem.Play(GameController.SoundVolume, 0, 0);
+						#endif
                         if (GameController.Difficulty == "Normal")
                         {
                             GameController.Difficulty = "Hard";                            

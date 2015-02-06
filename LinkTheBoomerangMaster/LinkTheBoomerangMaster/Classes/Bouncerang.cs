@@ -30,10 +30,12 @@ namespace LinkTheBoomerangMaster.Classes
             random = new Random();
             _game = game;
             animatedTexture.Load(game.Content, "projectiles/boom", Frames, FramesPerSec);
+			#if PLAY_SOUND
             LaunchSound = game.Content.Load<SoundEffect>("sounds/boom-throw");
             WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
             EnemyHitSound = game.Content.Load<SoundEffect>("sounds/LA_BowArrow");
             ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
+			#endif
             isMoving = true;
         }
 
@@ -56,7 +58,9 @@ namespace LinkTheBoomerangMaster.Classes
         {
             if (GameObject.CheckLinkBoomCollision(link, this))
             {
+				#if PLAY_SOUND
                 ShieldHitSound.Play(GameController.SoundVolume, 0, 0);
+				#endif
                 this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
             }
 
@@ -64,7 +68,9 @@ namespace LinkTheBoomerangMaster.Classes
                 int collisionResult = e.CheckEnemyCollision(this);
                 if(collisionResult != 0)
                 {
+					#if PLAY_SOUND
                     EnemyHitSound.Play(GameController.SoundVolume, 0, 0);
+					#endif
                     e.KillEnemy();
                     if(collisionResult == 1)
                     {
@@ -104,7 +110,9 @@ namespace LinkTheBoomerangMaster.Classes
             }
 
             Velocity *= (speed );
+			#if PLAY_SOUND
             LaunchSound.Play(GameController.SoundVolume, 0, 0);
+			#endif
         }
 
         public void CheckWallCollision()
@@ -140,9 +148,10 @@ namespace LinkTheBoomerangMaster.Classes
                 Velocity.X *= -1;
                 collided = true;
             }
-
+			#if PLAY_SOUND
             if (collided && launched)
                 WallHitSound.Play(GameController.SoundVolume, 0, 0);
+			#endif
         }
 
         public override void Move(Vector2 amount)
