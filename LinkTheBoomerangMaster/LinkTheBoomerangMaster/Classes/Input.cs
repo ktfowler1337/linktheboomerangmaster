@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Leave this defined unless your name is adrian on Ubuntu lol
+#define PLAY_SOUND
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
