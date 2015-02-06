@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define PLAY_SOUND
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,15 +43,20 @@ namespace LinkTheBoomerangMaster
                 GameController.Paused = !GameController.Paused;
             }
 
+            CheckForMuteMusicAndSound();
+        }
+
+        private static void CheckForMuteMusicAndSound()
+        {
             if (currentKB.IsKeyUp(Keys.M) && previousKB.IsKeyDown(Keys.M))
             {
-				#if PLAY_SOUND
+#if PLAY_SOUND
                 GameController.MusicOn = !GameController.MusicOn;
                 if (GameController.MusicOn)
                     MediaPlayer.Play(GameController.song);
                 else
                     MediaPlayer.Stop();
-				#endif
+#endif
             }
 
             if (currentKB.IsKeyUp(Keys.N) && previousKB.IsKeyDown(Keys.N))
@@ -67,6 +73,7 @@ namespace LinkTheBoomerangMaster
         {
             previousKB = currentKB;
             currentKB = Keyboard.GetState();
+            CheckForMuteMusicAndSound();
             if (currentKB.IsKeyUp(Keys.Escape) && previousKB.IsKeyDown(Keys.Escape))
             {
                 if (menu.currentMenu == "Start")

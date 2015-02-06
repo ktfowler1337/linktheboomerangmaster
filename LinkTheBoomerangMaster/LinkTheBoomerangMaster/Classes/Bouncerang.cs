@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define PLAY_SOUND
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -91,6 +92,11 @@ namespace LinkTheBoomerangMaster.Classes
                 this.launched = false;
                 this.Position = new Vector2(500, 500);
                 link.LifeCount -= 1;
+                _game.level.ArcherHit = false;
+                _game.level.WizardHit = false;
+                _game.link.EnemyDestroyCount = 0;
+                
+                GameController.GameSpeedMultiplier2 = 1f;
             }
         }
 

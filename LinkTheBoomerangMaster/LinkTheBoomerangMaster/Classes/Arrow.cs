@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define PLAY_SOUND
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace LinkTheBoomerangMaster.Classes
 {
+
     public class Arrow : GameObject
     {
         Vector2 Velocity;
@@ -76,7 +78,7 @@ namespace LinkTheBoomerangMaster.Classes
 				#if PLAY_SOUND
                 if (Visible)
 
-                    //WallHitSound.Play(GameController.SoundVolume, 0, 0);
+                    WallHitSound.Play(GameController.SoundVolume, 0, 0);
 				#endif
                 Visible = false;
             }
