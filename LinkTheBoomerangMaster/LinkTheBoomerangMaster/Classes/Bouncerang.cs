@@ -1,4 +1,4 @@
-﻿#define PLAY_SOUND
+﻿//#define PLAY_SOUND
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,12 +57,27 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void CheckState(Player link)
         {
-            if (GameObject.CheckLinkBoomCollision(link, this))
+			int result = link.CheckLinkBoomCollision (this);
+            if (result != -1)
             {
 				#if PLAY_SOUND
                 ShieldHitSound.Play(GameController.SoundVolume, 0, 0);
 				#endif
-                this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+				//centre
+				if (result == 0) {
+					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+				}
+				//left
+				if (result == 1) {
+					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+					this.Velocity.X = this.Velocity.X - (float)3;
+				}
+				//right
+				if (result == 2) {
+					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+					this.Velocity.X = this.Velocity.X + (float)3;
+				}
+                
             }
 
 			foreach (Enemy e in _game.Enemies.ToList()) {

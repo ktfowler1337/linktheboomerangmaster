@@ -99,5 +99,37 @@ namespace LinkTheBoomerangMaster
             else if(EnemyDestroyCount == 12)
                 GameController.GameSpeedMultiplier2 = 1.5f;
         }
+
+		public Rectangle GetLeftShield ()
+		{
+			return new Rectangle(shield.X,shield.Y,shield.Width/3,shield.Height);
+		}
+
+		public Rectangle GetRightShield ()
+		{
+
+			return new Rectangle(shield.X+48,shield.Y,shield.Width/3,shield.Height);
+		}
+
+		public int CheckLinkBoomCollision( Bouncerang boom)
+		{
+			if (this.shield.Intersects (boom.Bounds)) {
+				Rectangle leftSide = this.GetLeftShield ();
+				Rectangle rightSide = this.GetRightShield ();
+
+				//if contants left side
+				if (leftSide.Intersects (boom.Bounds)) {
+					return 1;
+				}
+
+				//if contants right side
+				if (rightSide.Intersects (boom.Bounds)) {
+					return 2;
+				}
+				//else middle
+				return 0;
+			}
+			return -1;
+		}
     }
 }
