@@ -28,7 +28,7 @@ namespace LinkTheBoomerangMaster
 
         const float KEYBOARD_PLAYER_SPEED = 10f;
 
-        public int BombCount = 0;
+        public int BombCount = 10;
         public int ArrowCount = 10;
         public int LifeCount = 3;
         public int RupeeCount = 0;

@@ -24,6 +24,7 @@ namespace LinkTheBoomerangMaster
         public static Bouncerang boom;
         const float BALL_START_SPEED = 8f;
         private static bool ArrowButtonPressed = false;
+        private static bool BombButtonPressed = false;
 
         static KeyboardState currentKB, previousKB;
 
@@ -285,6 +286,22 @@ namespace LinkTheBoomerangMaster
                         Arrow a = new Arrow(game);
                         a.Launch();
                         ArrowButtonPressed = false;
+                    }
+                }
+
+                if (link.BombCount > 0)
+                {
+
+                    if (keyboardState.IsKeyDown(Keys.E))
+                    {
+                        BombButtonPressed = true;
+                    }
+                    if (keyboardState.IsKeyUp(Keys.E) && BombButtonPressed)
+                    {
+                        link.BombCount -= 1;
+                        Bomb a = new Bomb(game);
+                        a.Launch();
+                        BombButtonPressed = false;
                     }
                 }
 

@@ -42,6 +42,7 @@ namespace LinkTheBoomerangMaster
 
         public virtual void Move(Vector2 amount)
         {
+            double hyp = Math.Sqrt(16);
             Position += amount;
         }
 

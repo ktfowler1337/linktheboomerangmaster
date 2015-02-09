@@ -22,6 +22,8 @@ namespace LinkTheBoomerangMaster.Classes
         private SoundEffect EnemyHitSound;
         private SoundEffect ShieldHitSound;
 
+        public bool isSuperang = false;
+
         private const int Frames = 4;
         private const int FramesPerSec = 14;
 
@@ -38,6 +40,20 @@ namespace LinkTheBoomerangMaster.Classes
             ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
 			#endif
             isMoving = true;
+            flipSuperang();
+        }
+
+        public void flipSuperang()
+        {
+            if(isSuperang)
+            {
+                animatedTexture.Load(_game.Content, "projectiles/boom", Frames, FramesPerSec);
+            }
+            else
+            {
+                animatedTexture.Load(_game.Content, "projectiles/superang", Frames, FramesPerSec);
+            }
+            isSuperang = !isSuperang;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -88,14 +104,17 @@ namespace LinkTheBoomerangMaster.Classes
                     EnemyHitSound.Play(GameController.SoundVolume, 0, 0);
 					#endif
                     e.KillEnemy();
-                    if(collisionResult == 1)
+                    if (!isSuperang)
                     {
-                        this.Velocity.X *= -1;
-                    }
-                    else
-                    {
-                        this.Velocity.Y *= -1;
-                    }
+                        if (collisionResult == 1)
+                        {
+                            this.Velocity.X *= -1;
+                        }
+                        else
+                        {
+                            this.Velocity.Y *= -1;
+                        }
+                    }                    
                     break;
                 }
 			}

@@ -168,6 +168,11 @@ namespace LinkTheBoomerangMaster
                         Arrow a = (Arrow)Projectiles[x];
                         a.Update(gameTime);
                     }
+                    else if (Projectiles[x] is Bomb)
+                    {
+                        Bomb a = (Bomb)Projectiles[x];
+                        a.Update(gameTime);
+                    }
                 }
 
                 base.Update(gameTime);
@@ -200,6 +205,11 @@ namespace LinkTheBoomerangMaster
                 if (p is Arrow)
                 {
                     Arrow a = (Arrow)p;
+                    a.Draw(spriteBatch);
+                }
+                else if (p is Bomb)
+                {
+                    Bomb a = (Bomb)p;
                     a.Draw(spriteBatch);
                 }
 			}

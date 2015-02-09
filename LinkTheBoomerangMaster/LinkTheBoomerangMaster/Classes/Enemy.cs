@@ -82,6 +82,13 @@ namespace LinkTheBoomerangMaster
             return 0;
         }
 
+        public bool CheckEnemyCollisionBasicBounds(Rectangle v)
+        {
+            if (this.Bounds.Intersects(v))
+                return true;
+            return false;
+        }
+
         public void KillEnemy()
         {
             //powerup drop
