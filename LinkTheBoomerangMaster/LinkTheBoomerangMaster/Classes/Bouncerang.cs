@@ -1,4 +1,4 @@
-﻿#define PLAY_SOUND
+﻿//#define PLAY_SOUND
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +76,7 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void CheckState(Player link)
         {
-            int result = link.CheckLinkBoomCollision(this);
+            int result = link.CheckLinkCollision(this);
             if (result != -1)
             {
 #if PLAY_SOUND

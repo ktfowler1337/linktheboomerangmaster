@@ -1,5 +1,5 @@
 ﻿//Leave this defined unless your name is adrian on Ubuntu lol
-#define PLAY_SOUND
+//#define PLAY_SOUND
 #region Using Statements
 using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework;
@@ -163,16 +163,17 @@ namespace LinkTheBoomerangMaster
                 }
                 for(int x = 0; x < Projectiles.Count; x++) 
                 {
-                    if (Projectiles[x] is Arrow)
-                    {
-                        Arrow a = (Arrow)Projectiles[x];
-                        a.Update(gameTime);
-                    }
-                    else if (Projectiles[x] is Bomb)
-                    {
-                        Bomb a = (Bomb)Projectiles[x];
-                        a.Update(gameTime);
-                    }
+					if (Projectiles [x] is Arrow) {
+						Arrow a = (Arrow)Projectiles [x];
+						a.Update (gameTime);
+					} else if (Projectiles [x] is Bomb) {
+						Bomb a = (Bomb)Projectiles [x];
+						a.Update (gameTime);
+					} else if (Projectiles [x] is Potion) {
+						Potion a = (Potion)Projectiles [x];
+						a.Update (gameTime);
+						a.CheckState (link);
+					}
                 }
 
                 base.Update(gameTime);
@@ -202,16 +203,16 @@ namespace LinkTheBoomerangMaster
 
             foreach (GameObject p in Projectiles)
             {
-                if (p is Arrow)
-                {
-                    Arrow a = (Arrow)p;
-                    a.Draw(spriteBatch);
-                }
-                else if (p is Bomb)
-                {
-                    Bomb a = (Bomb)p;
-                    a.Draw(spriteBatch);
-                }
+				if (p is Arrow) {
+					Arrow a = (Arrow)p;
+					a.Draw (spriteBatch);
+				} else if (p is Bomb) {
+					Bomb a = (Bomb)p;
+					a.Draw (spriteBatch);
+				} else if (p is Potion) {
+					Potion a = (Potion)p;
+					a.Draw (spriteBatch);
+				}
 			}
 			foreach (Enemy e in Enemies) {
 

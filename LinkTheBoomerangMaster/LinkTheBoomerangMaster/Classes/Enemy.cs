@@ -89,9 +89,16 @@ namespace LinkTheBoomerangMaster
             return false;
         }
 
+		private void DropPotion()
+		{
+			Potion myPotion = new Potion (_game);
+			myPotion.DropPotion (this.Position.X, this.Position.Y, this.Texture.GetWidth(), this.Texture.GetHeight());
+		}
+
         public void KillEnemy()
         {
             //powerup drop
+			this.DropPotion ();
             _game.link.UpdateKillCount();
             _game.link.RupeeCount += this.rupees;
             _game.currentLevelPoints += this.rupees;

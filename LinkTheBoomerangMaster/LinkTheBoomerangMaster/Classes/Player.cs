@@ -111,7 +111,7 @@ namespace LinkTheBoomerangMaster
 			return new Rectangle(shield.X+48,shield.Y,shield.Width/3,shield.Height);
 		}
 
-		public int CheckLinkBoomCollision( Bouncerang boom)
+		public int CheckLinkCollision( GameObject boom)
 		{
 			if (this.shield.Intersects (boom.Bounds)) {
 				Rectangle leftSide = this.GetLeftShield ();
