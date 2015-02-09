@@ -73,6 +73,13 @@ namespace LinkTheBoomerangMaster
 
         public static float GameSpeedMultiplier2 = 1f;
 
+        public SpriteFont fontBig;
+
+        public bool showItemText = false;
+        public int showItemTextCounter = 0;
+        public string gotItemText = "";
+        
+
         public GameController()
             : base()
         {
@@ -82,7 +89,7 @@ namespace LinkTheBoomerangMaster
             graphics.PreferredBackBufferWidth = 600;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight = 700;   // set this value to the desired height of your window
             graphics.ApplyChanges();
-
+            
 
             // Set device frame rate to 30 fps.
             TargetElapsedTime = TimeSpan.FromSeconds(1 / 30.0);
@@ -151,27 +158,31 @@ namespace LinkTheBoomerangMaster
             
             if (!Paused)
             {
+                
                 Input.CheckKeyboardInput(menu);
-                ScreenWidth = GraphicsDevice.Viewport.Width;
-                ScreenHeight = GraphicsDevice.Viewport.Height;
+                if (!isGameOver)
+                {
+                    ScreenWidth = GraphicsDevice.Viewport.Width;
+                    ScreenHeight = GraphicsDevice.Viewport.Height;
 
-                link.Update(gameTime);
-                foreach (Bouncerang b in bouncerangs)
-                {
-                    b.Update(gameTime);
-                    b.CheckState(link);
-                }
-                for(int x = 0; x < Projectiles.Count; x++) 
-                {
-                    if (Projectiles[x] is Arrow)
+                    link.Update(gameTime);
+                    foreach (Bouncerang b in bouncerangs)
                     {
-                        Arrow a = (Arrow)Projectiles[x];
-                        a.Update(gameTime);
+                        b.Update(gameTime);
+                        b.CheckState(link);
                     }
-                    else if (Projectiles[x] is Bomb)
+                    for (int x = 0; x < Projectiles.Count; x++)
                     {
-                        Bomb a = (Bomb)Projectiles[x];
-                        a.Update(gameTime);
+                        if (Projectiles[x] is Arrow)
+                        {
+                            Arrow a = (Arrow)Projectiles[x];
+                            a.Update(gameTime);
+                        }
+                        else if (Projectiles[x] is Bomb)
+                        {
+                            Bomb a = (Bomb)Projectiles[x];
+                            a.Update(gameTime);
+                        }
                     }
                 }
 
@@ -221,6 +232,17 @@ namespace LinkTheBoomerangMaster
 
             link.Draw(spriteBatch);
 
+            
+            if (isGameOver)
+            {
+                spriteBatch.DrawString(fontBig, "Game Over...", new Vector2(220,55), Color.White);
+            }
+            else 
+                if (showItemText && showItemTextCounter < 100)
+            {
+                spriteBatch.DrawString(fontBig, "Got Item!", new Vector2(220, 55), Color.White);
+                showItemTextCounter++;
+            }
             spriteBatch.End();
             if (Paused)
                 menu.Draw(spriteBatch);
@@ -242,8 +264,6 @@ namespace LinkTheBoomerangMaster
         internal void PrepareGame(int levelNum = 1)
         {
             LoadContent();
-
-
             menu = new GameMenu(this);
             bouncerangs = new List<Bouncerang>();
             Projectiles = new List<GameObject>();
@@ -252,14 +272,16 @@ namespace LinkTheBoomerangMaster
             ScreenWidth = GraphicsDevice.Viewport.Width;
             Bouncerang boomerang1 = new Bouncerang(this);
             boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("projectiles/boom"), scale);
+            fontBig = Content.Load<SpriteFont>("fonts/font");
             bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
             scoreBoard = new Scoreboard(this);
-            link = new Player(this,link == null ? 0 : link.RupeeCount);
+            link = new Player(this,link == null ? 0 : link.RupeeCount, link == null ? 0 : link.ArrowCount, link == null ? 0 : link.BombCount);
             Input.link = link;
             Input.boom = boomerang1;
             level = new Level(this);
             level.Generate_Level(levelNum);
+            isGameOver = false;
         }
     }
 }

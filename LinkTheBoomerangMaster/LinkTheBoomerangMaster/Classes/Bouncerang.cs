@@ -174,6 +174,8 @@ namespace LinkTheBoomerangMaster.Classes
                 _game.link.EnemyDestroyCount = 0;
 
                 GameController.GameSpeedMultiplier2 = 1f;
+                if (link.LifeCount <= 0)
+                    _game.isGameOver = true;
             }
         }
 
