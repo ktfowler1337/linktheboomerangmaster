@@ -87,6 +87,7 @@ namespace LinkTheBoomerangMaster
             //powerup drop
             _game.link.UpdateKillCount();
             _game.link.RupeeCount += this.rupees;
+            _game.currentLevelPoints += this.rupees;
             _game.Enemies.Remove(this);
             if (Type == "archer" && !_game.level.ArcherHit)
             {

@@ -1,5 +1,5 @@
 ﻿//Leave this defined unless your name is adrian on Ubuntu lol
-//#define PLAY_SOUND
+#define PLAY_SOUND
 #region Using Statements
 using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework;
@@ -30,20 +30,37 @@ namespace LinkTheBoomerangMaster
         public static int ScreenWidth;
         public static int ScreenHeight;
 
-        GameMenu menu;
+        
+        // game mechanics
+        public bool isGameOver = false;
 
+        public int currentLevel = 1;
+
+        public static uint pointsToWin = 15;
+
+        public int currentLevelPoints = 0;   
+
+        public static string Difficulty = "Normal";
+
+
+        //game objects
         public GameEnvironment environment;
 
 		public Level level;
 
         public Scoreboard scoreBoard;
 
+        GameMenu menu;
+
         public Player link;
 
-        public static uint pointsToWin = 25;
+        private List<Bouncerang> bouncerangs;
 
-        public static string Difficulty = "Normal";
+        public List<GameObject> Projectiles;
 
+        public List<Enemy> Enemies;        
+
+        //Options / gamestate
         public static bool Paused = false;
 
         public static bool SoundOn = true;
@@ -55,12 +72,6 @@ namespace LinkTheBoomerangMaster
         public static float GameSpeedMultiplier = 1f;
 
         public static float GameSpeedMultiplier2 = 1f;
-
-        private List<Bouncerang> bouncerangs;
-
-        public List<GameObject> Projectiles;
-
-		public List<Enemy> Enemies;
 
         public GameController()
             : base()
@@ -85,23 +96,8 @@ namespace LinkTheBoomerangMaster
         /// </summary>
         protected override void Initialize()
         {
-            menu = new GameMenu(this);
-            bouncerangs = new List<Bouncerang>();
-            Projectiles = new List<GameObject>();
-			Enemies = new List<Enemy>();
-            ScreenHeight = GraphicsDevice.Viewport.Height;
-            ScreenWidth = GraphicsDevice.Viewport.Width;
-            Bouncerang boomerang1 = new Bouncerang(this);
-            boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("projectiles/boom"), scale);
-            bouncerangs.Add(boomerang1);
-            environment = new GameEnvironment(this);
-			level = new Level (this);
-			level.Generate_Level (2);
-            scoreBoard = new Scoreboard(this);
-            link = new Player(this);
-            Input.link = link;
-            Input.boom = boomerang1;
 
+            PrepareGame();
             base.Initialize();
         }
 
@@ -150,7 +146,8 @@ namespace LinkTheBoomerangMaster
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Paused = !Paused;
-
+            if(currentLevelPoints >= pointsToWin)
+                SwitchLevel();
             
             if (!Paused)
             {
@@ -224,10 +221,35 @@ namespace LinkTheBoomerangMaster
 
         }
 
-        internal void ResetGame()
+        public void SwitchLevel(int levelNum = 0)
         {
-            Initialize();
+            if (levelNum == 0)
+                levelNum = ++currentLevel;
+            this.currentLevelPoints = 0;
+            PrepareGame(levelNum);
+        }
+
+        internal void PrepareGame(int levelNum = 1)
+        {
             LoadContent();
+
+
+            menu = new GameMenu(this);
+            bouncerangs = new List<Bouncerang>();
+            Projectiles = new List<GameObject>();
+            Enemies = new List<Enemy>();
+            ScreenHeight = GraphicsDevice.Viewport.Height;
+            ScreenWidth = GraphicsDevice.Viewport.Width;
+            Bouncerang boomerang1 = new Bouncerang(this);
+            boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("projectiles/boom"), scale);
+            bouncerangs.Add(boomerang1);
+            environment = new GameEnvironment(this);
+            scoreBoard = new Scoreboard(this);
+            link = new Player(this,link == null ? 0 : link.RupeeCount);
+            Input.link = link;
+            Input.boom = boomerang1;
+            level = new Level(this);
+            level.Generate_Level(levelNum);
         }
     }
 }
