@@ -24,8 +24,12 @@ namespace LinkTheBoomerangMaster.Classes
 
         public bool isSuperang = false;
 
+        private int angleAdjustment = 15;
+
         private const int Frames = 4;
         private const int FramesPerSec = 14;
+
+        private double angleOfReflection = 45;
 
         public Bouncerang(GameController game)
         {
@@ -33,19 +37,18 @@ namespace LinkTheBoomerangMaster.Classes
             random = new Random();
             _game = game;
             animatedTexture.Load(game.Content, "projectiles/boom", Frames, FramesPerSec);
-			#if PLAY_SOUND
+#if PLAY_SOUND
             LaunchSound = game.Content.Load<SoundEffect>("sounds/boom-throw");
             WallHitSound = game.Content.Load<SoundEffect>("sounds/boom-wallhit");
             EnemyHitSound = game.Content.Load<SoundEffect>("sounds/LA_BowArrow");
             ShieldHitSound = game.Content.Load<SoundEffect>("sounds/LA_Shield_Deflect");
-			#endif
+#endif
             isMoving = true;
-            flipSuperang();
         }
 
         public void flipSuperang()
         {
-            if(isSuperang)
+            if (isSuperang)
             {
                 animatedTexture.Load(_game.Content, "projectiles/boom", Frames, FramesPerSec);
             }
@@ -58,8 +61,8 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if(launched)
-                base.Draw(spriteBatch);            
+            if (launched)
+                base.Draw(spriteBatch);
         }
 
         public void Update(GameTime time)
@@ -73,36 +76,76 @@ namespace LinkTheBoomerangMaster.Classes
 
         public void CheckState(Player link)
         {
-			int result = link.CheckLinkBoomCollision (this);
+            int result = link.CheckLinkBoomCollision(this);
             if (result != -1)
             {
-				#if PLAY_SOUND
+#if PLAY_SOUND
                 ShieldHitSound.Play(GameController.SoundVolume, 0, 0);
-				#endif
-				//centre
-				if (result == 0) {
-					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
-				}
-				//left
-				if (result == 1) {
-					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
-					this.Velocity.X = this.Velocity.X - (float)3;
-				}
-				//right
-				if (result == 2) {
-					this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
-					this.Velocity.X = this.Velocity.X + (float)3;
-				}
-                
+#endif
+                //centre
+                Boolean flipX = false;
+                double hyp = Math.Sqrt((this.Velocity.Y * this.Velocity.Y + this.Velocity.X * this.Velocity.X));
+                if (result == 0)
+                {
+                    this.Velocity.Y = Math.Abs(this.Velocity.Y) * -1;
+                }
+                else if (result == 1)
+                {
+                    //left
+
+                    if (this.Velocity.X > 0)
+                    {
+                        angleOfReflection += angleAdjustment;
+                    }
+                    else
+                    {
+                        if (angleOfReflection > 25)
+                        {
+                            angleOfReflection -= angleAdjustment;
+                            flipX = true;
+                        }
+                    }
+
+                    this.Velocity.Y = getNewY(hyp, angleOfReflection);
+                    this.Velocity.X = getNewX(hyp, angleOfReflection);
+                    this.Velocity.Y = this.Velocity.Y * -1;
+                    if (flipX)
+                        this.Velocity.X *= -1;
+                }
+                else if (result == 2)
+                {
+
+                    if (this.Velocity.X > 0)
+                    {
+                        if (angleOfReflection > 25)
+                        {
+                            angleOfReflection -= angleAdjustment;
+                        }
+                    }
+                    else
+                    {
+
+                        angleOfReflection += angleAdjustment;
+                        flipX = true;
+                    }
+
+                    this.Velocity.Y = getNewY(hyp, angleOfReflection);
+                    this.Velocity.X = getNewX(hyp, angleOfReflection);
+                    this.Velocity.Y = this.Velocity.Y * -1;
+                    if (flipX)
+                        this.Velocity.X *= -1;
+                }
+
             }
 
-			foreach (Enemy e in _game.Enemies.ToList()) {
+            foreach (Enemy e in _game.Enemies.ToList())
+            {
                 int collisionResult = e.CheckEnemyCollision(this);
-                if(collisionResult != 0)
+                if (collisionResult != 0)
                 {
-					#if PLAY_SOUND
+#if PLAY_SOUND
                     EnemyHitSound.Play(GameController.SoundVolume, 0, 0);
-					#endif
+#endif
                     e.KillEnemy();
                     if (!isSuperang)
                     {
@@ -114,10 +157,10 @@ namespace LinkTheBoomerangMaster.Classes
                         {
                             this.Velocity.Y *= -1;
                         }
-                    }                    
+                    }
                     break;
                 }
-			}
+            }
 
 
             if (this.Position.Y > GameController.ScreenHeight)
@@ -129,9 +172,19 @@ namespace LinkTheBoomerangMaster.Classes
                 _game.level.ArcherHit = false;
                 _game.level.WizardHit = false;
                 _game.link.EnemyDestroyCount = 0;
-                
+
                 GameController.GameSpeedMultiplier2 = 1f;
             }
+        }
+
+        private float getNewY(double hyp, double angleOfReflection)
+        {
+            return (float)(hyp * Math.Sin(angleOfReflection * (Math.PI / 180)));
+        }
+
+        private float getNewX(double hyp, double angleOfReflection)
+        {
+            return (float)(hyp * Math.Cos(angleOfReflection * (Math.PI / 180)));
         }
 
         public void Launch(float speed)
@@ -149,10 +202,10 @@ namespace LinkTheBoomerangMaster.Classes
                 Velocity.X *= -1; //launch to the left
             }
 
-            Velocity *= (speed );
-			#if PLAY_SOUND
+            Velocity *= (speed);
+#if PLAY_SOUND
             LaunchSound.Play(GameController.SoundVolume, 0, 0);
-			#endif
+#endif
         }
 
         public void CheckWallCollision()
@@ -182,16 +235,16 @@ namespace LinkTheBoomerangMaster.Classes
             //    Position.Y = GameController.ScreenHeight - _game.environment.HorWallTile.GetHeight() - Texture.GetHeight();
             //    Velocity.Y *= -1;
             //}
-            if (Position.X + (animatedTexture.myTexture.Width*GameController.scale) / 4 > GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth())
+            if (Position.X + (animatedTexture.myTexture.Width * GameController.scale) / 4 > GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth())
             {
-                Position.X = GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth() - (animatedTexture.myTexture.Width*GameController.scale) / 4;
+                Position.X = GameController.ScreenWidth - _game.environment.VertWallTile.GetWidth() - (animatedTexture.myTexture.Width * GameController.scale) / 4;
                 Velocity.X *= -1;
                 collided = true;
             }
-			#if PLAY_SOUND
+#if PLAY_SOUND
             if (collided && launched)
                 WallHitSound.Play(GameController.SoundVolume, 0, 0);
-			#endif
+#endif
         }
 
         public override void Move(Vector2 amount)

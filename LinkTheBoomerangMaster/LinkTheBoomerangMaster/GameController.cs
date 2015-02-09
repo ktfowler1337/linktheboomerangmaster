@@ -36,7 +36,7 @@ namespace LinkTheBoomerangMaster
 
         public int currentLevel = 1;
 
-        public static uint pointsToWin = 15;
+        public static uint pointsToWin = 90;
 
         public int currentLevelPoints = 0;   
 
