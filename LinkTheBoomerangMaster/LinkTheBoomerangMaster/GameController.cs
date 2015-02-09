@@ -1,5 +1,5 @@
 ﻿//Leave this defined unless your name is adrian on Ubuntu lol
-#define PLAY_SOUND
+//#define PLAY_SOUND
 #region Using Statements
 using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework;
@@ -20,17 +20,17 @@ namespace LinkTheBoomerangMaster
     /// </summary>
     public class GameController : Game
     {
-		#if PLAY_SOUND
+#if PLAY_SOUND
         static public Song song;
         static public Song Menusong;
-		#endif
+#endif
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public static int ScreenWidth;
         public static int ScreenHeight;
 
-        
+
         // game mechanics
         public bool isGameOver = false;
 
@@ -38,7 +38,7 @@ namespace LinkTheBoomerangMaster
 
         public static uint pointsToWin = 90;
 
-        public int currentLevelPoints = 0;   
+        public int currentLevelPoints = 0;
 
         public static string Difficulty = "Normal";
 
@@ -46,7 +46,7 @@ namespace LinkTheBoomerangMaster
         //game objects
         public GameEnvironment environment;
 
-		public Level level;
+        public Level level;
 
         public Scoreboard scoreBoard;
 
@@ -58,7 +58,7 @@ namespace LinkTheBoomerangMaster
 
         public List<GameObject> Projectiles;
 
-        public List<Enemy> Enemies;        
+        public List<Enemy> Enemies;
 
         //Options / gamestate
         public static bool Paused = false;
@@ -78,7 +78,7 @@ namespace LinkTheBoomerangMaster
         public bool showItemText = false;
         public int showItemTextCounter = 0;
         public string gotItemText = "";
-        
+
 
         public GameController()
             : base()
@@ -89,7 +89,7 @@ namespace LinkTheBoomerangMaster
             graphics.PreferredBackBufferWidth = 600;  // set this value to the desired width of your window
             graphics.PreferredBackBufferHeight = 700;   // set this value to the desired height of your window
             graphics.ApplyChanges();
-            
+
 
             // Set device frame rate to 30 fps.
             TargetElapsedTime = TimeSpan.FromSeconds(1 / 30.0);
@@ -116,7 +116,7 @@ namespace LinkTheBoomerangMaster
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            #if PLAY_SOUND
+#if PLAY_SOUND
                 song = Content.Load<Song>("music/metal-zelda");
                 Menusong = Content.Load<Song>("music/menu-theme");
                 MediaPlayer.IsRepeating = true;
@@ -132,7 +132,7 @@ namespace LinkTheBoomerangMaster
                 {
 
                 }
-            #endif
+#endif
         }
 
         /// <summary>
@@ -153,12 +153,12 @@ namespace LinkTheBoomerangMaster
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Paused = !Paused;
-            if(currentLevelPoints >= pointsToWin)
+            if (currentLevelPoints >= pointsToWin || Enemies.Count <= 0)
                 SwitchLevel();
-            
+
             if (!Paused)
             {
-                
+
                 Input.CheckKeyboardInput(menu);
                 if (!isGameOver)
                 {
@@ -183,6 +183,12 @@ namespace LinkTheBoomerangMaster
                             Bomb a = (Bomb)Projectiles[x];
                             a.Update(gameTime);
                         }
+                        else if (Projectiles[x] is Potion)
+                        {
+                            Potion a = (Potion)Projectiles[x];
+                            a.Update(gameTime);
+                            a.CheckState(link);
+                        }
                     }
                 }
 
@@ -200,7 +206,7 @@ namespace LinkTheBoomerangMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            
+
             environment.Draw(spriteBatch);
             scoreBoard.Draw(spriteBatch);
 
@@ -223,26 +229,32 @@ namespace LinkTheBoomerangMaster
                     Bomb a = (Bomb)p;
                     a.Draw(spriteBatch);
                 }
-			}
-			foreach (Enemy e in Enemies) {
+                else if (p is Potion)
+                {
+                    Potion a = (Potion)p;
+                    a.Draw(spriteBatch);
+                }
+            }
+            foreach (Enemy e in Enemies)
+            {
 
-				e.Draw (spriteBatch);
-			}
+                e.Draw(spriteBatch);
+            }
 
 
             link.Draw(spriteBatch);
 
-            
+
             if (isGameOver)
             {
-                spriteBatch.DrawString(fontBig, "Game Over...", new Vector2(220,55), Color.White);
+                spriteBatch.DrawString(fontBig, "Game Over...", new Vector2(220, 55), Color.White);
             }
-            else 
+            else
                 if (showItemText && showItemTextCounter < 100)
-            {
-                spriteBatch.DrawString(fontBig, "Got Item!", new Vector2(220, 55), Color.White);
-                showItemTextCounter++;
-            }
+                {
+                    spriteBatch.DrawString(fontBig, "Got Item!", new Vector2(220, 55), Color.White);
+                    showItemTextCounter++;
+                }
             spriteBatch.End();
             if (Paused)
                 menu.Draw(spriteBatch);
@@ -276,7 +288,7 @@ namespace LinkTheBoomerangMaster
             bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
             scoreBoard = new Scoreboard(this);
-            link = new Player(this,link == null ? 0 : link.RupeeCount, link == null ? 0 : link.ArrowCount, link == null ? 0 : link.BombCount);
+            link = new Player(this, link == null ? 0 : link.RupeeCount, link == null ? 0 : link.ArrowCount, link == null ? 0 : link.BombCount);
             Input.link = link;
             Input.boom = boomerang1;
             level = new Level(this);
