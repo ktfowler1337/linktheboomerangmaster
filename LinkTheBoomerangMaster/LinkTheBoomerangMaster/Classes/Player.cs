@@ -35,12 +35,13 @@ namespace LinkTheBoomerangMaster
 
         public Rectangle shield;
 
-        public Player(GameController game, int rupees, int arrowCount = 0, int bombCount =0) : base(2f)
+        public Player(GameController game, int rupees, int arrowCount = 0, int bombCount =0, int lives = 0) : base(2f)
         {
             _game = game;
             ArrowCount = arrowCount;
             BombCount = bombCount;
             RupeeCount = rupees;
+            LifeCount = lives;
             throwAni = new AnimatedTexture(Position, 0, 2, 0.5f);
             Texture = new _2DTexture(game.Content.Load<Texture2D>("player/linkidle" + (GameController.Difficulty == "Normal" ? "" : "small")), GameController.scale);
             throwIdle = new _2DTexture(game.Content.Load<Texture2D>("player/linkidlewithboom"), 2);
