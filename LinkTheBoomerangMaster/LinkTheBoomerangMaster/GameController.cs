@@ -36,7 +36,7 @@ namespace LinkTheBoomerangMaster
 
         public int currentLevel = 1;
 
-        public static uint pointsToWin = 90;
+        public static uint pointsToWin = 200;
 
         public int currentLevelPoints = 0;
 
@@ -291,6 +291,7 @@ namespace LinkTheBoomerangMaster
             int lives, bombs, arrows, rupees;
             if(isNewGame)
             {
+                currentLevel = 1;
                 lives = 3;
                 bombs = 0;
                 arrows = 0;
