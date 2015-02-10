@@ -54,7 +54,7 @@ namespace LinkTheBoomerangMaster
 
         public Player link;
 
-        private List<Bouncerang> bouncerangs;
+        public List<Bouncerang> bouncerangs;
 
         public List<GameObject> Projectiles;
 

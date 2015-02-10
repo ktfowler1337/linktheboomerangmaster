@@ -14,12 +14,14 @@ namespace LinkTheBoomerangMaster.Classes
 		Vector2 Velocity;
 		GameController _game;
 		const float POTION_SPEED = 5f;
+		int powerupType;
 		bool Visible = true;
 		int rupees;
 
-		public Potion (GameController game)
+		public Potion (GameController game, int powerup)
 		{
 			_game = game;
+			powerupType = powerup;
 			rupees = 5;
 			Position = new Vector2(10, 10);
 			Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/potion"), 2);
@@ -52,7 +54,16 @@ namespace LinkTheBoomerangMaster.Classes
 		{
 			int result = link.CheckLinkCollision(this);
 			if (result != -1) {
-				//add shit
+				if (powerupType == 1) {
+					_game.link.ArrowCount += 3;
+				} else if (powerupType == 2) {
+					_game.link.BombCount += 1;
+				} else if (powerupType == 3) {
+					//put in fire code here
+					foreach (Bouncerang b in _game.bouncerangs) {
+						b.flipSuperang ();
+					}
+				}
 				_game.link.RupeeCount += this.rupees;
                 _game.currentLevelPoints += this.rupees;
 				_game.Projectiles.Remove(this);

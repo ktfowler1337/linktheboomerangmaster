@@ -47,7 +47,7 @@ namespace LinkTheBoomerangMaster
 			//if soldier create row of soldiers
 			if (rowType != "random") {
 				for (int x=25; x < GameWidth; x=x+EnemyWidth) {
-					Enemy temp = new Enemy (_game, x, GameTopHeight + (EnemyHeight * (rowNumber)), rowType);
+					Enemy temp = new Enemy (_game, x, GameTopHeight + (EnemyHeight * (rowNumber)), rowType, random);
 				}
 			} else {
 
@@ -63,7 +63,7 @@ namespace LinkTheBoomerangMaster
 						classPicker = "wizard";
 					}
 					if(typePicker <= 8){
-						Enemy temp = new Enemy (_game, x, GameTopHeight + (EnemyHeight * (rowNumber)), classPicker);
+						Enemy temp = new Enemy (_game, x, GameTopHeight + (EnemyHeight * (rowNumber)), classPicker, random);
 					}
 
 				}

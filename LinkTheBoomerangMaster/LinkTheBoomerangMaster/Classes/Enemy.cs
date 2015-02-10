@@ -25,10 +25,10 @@ namespace LinkTheBoomerangMaster
 
 
 
-        public Enemy(GameController game, int X, int Y, string type)
+        public Enemy(GameController game, int X, int Y, string type, Random random)
         {
 
-            _random = new Random();
+            _random = random;
             _game = game;
             Type = type;
             if (type == "soldier")
@@ -91,8 +91,11 @@ namespace LinkTheBoomerangMaster
 
 		private void DropPotion()
 		{
-			Potion myPotion = new Potion (_game);
-			myPotion.DropPotion (this.Position.X, this.Position.Y, this.Texture.GetWidth(), this.Texture.GetHeight());
+			if (Powerup != 0)
+			{
+				Potion myPotion = new Potion (_game,Powerup);
+				myPotion.DropPotion (this.Position.X, this.Position.Y, this.Texture.GetWidth (), this.Texture.GetHeight ());
+			}
 		}
 
         public void KillEnemy()
