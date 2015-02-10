@@ -181,9 +181,11 @@ namespace LinkTheBoomerangMaster.Classes
                     _game.isGameOver = true;
                     _game.menu.currentMenu = "File";
                     GameController.Paused = true;
+                    #if PLAY_SOUND
                     MediaPlayer.Stop();
                     if (GameController.MusicOn)
                         MediaPlayer.Play(GameController.Menusong);
+                    #endif
 
                 }
             }

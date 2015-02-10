@@ -1,3 +1,4 @@
+#define PLAY_SOUND
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace LinkTheBoomerangMaster.Classes
 		bool Visible = true;
 		int rupees;
 
+        private SoundEffect gotItem;
+
 		public Potion (GameController game, int powerup)
 		{
 			_game = game;
@@ -26,7 +29,10 @@ namespace LinkTheBoomerangMaster.Classes
 			Position = new Vector2(10, 10);
 			Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/potion"), 2);
 			game.Projectiles.Add(this);
-		}
+            #if PLAY_SOUND
+            gotItem = game.Content.Load<SoundEffect>("sounds/LA_Get_PowerUp");
+            #endif
+        }
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
@@ -54,7 +60,10 @@ namespace LinkTheBoomerangMaster.Classes
 		{
 			int result = link.CheckLinkCollision(this);
 			if (result != -1) {
-				if (powerupType == 1) {
+                #if PLAY_SOUND
+                gotItem.Play(GameController.SoundVolume, 0, 0);
+                #endif
+                if (powerupType == 1) {
 					_game.link.ArrowCount += 3;
 				} else if (powerupType == 2) {
 					_game.link.BombCount += 1;
