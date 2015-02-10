@@ -1,4 +1,4 @@
-﻿//#define PLAY_SOUND
+﻿#define PLAY_SOUND
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace LinkTheBoomerangMaster.Classes
 {
@@ -46,17 +47,17 @@ namespace LinkTheBoomerangMaster.Classes
             isMoving = true;
         }
 
-        public void flipSuperang()
+        public void flipSuperang(bool state)
         {
-            if (isSuperang)
-            {
-                animatedTexture.Load(_game.Content, "projectiles/boom", Frames, FramesPerSec);
-            }
-            else
+            if (state)
             {
                 animatedTexture.Load(_game.Content, "projectiles/superang", Frames, FramesPerSec);
             }
-            isSuperang = !isSuperang;
+            else
+            {
+                animatedTexture.Load(_game.Content, "projectiles/boom", Frames, FramesPerSec);
+            }
+            isSuperang = state;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -175,7 +176,15 @@ namespace LinkTheBoomerangMaster.Classes
 
                 GameController.GameSpeedMultiplier2 = 1f;
                 if (link.LifeCount <= 0)
+                {
                     _game.isGameOver = true;
+                    _game.menu.currentMenu = "File";
+                    GameController.Paused = true;
+                    MediaPlayer.Stop();
+                    if (GameController.MusicOn)
+                        MediaPlayer.Play(GameController.Menusong);
+
+                }
             }
         }
 

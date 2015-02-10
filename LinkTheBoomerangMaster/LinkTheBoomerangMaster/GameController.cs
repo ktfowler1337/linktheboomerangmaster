@@ -1,5 +1,5 @@
 ﻿//Leave this defined unless your name is adrian on Ubuntu lol
-//#define PLAY_SOUND
+#define PLAY_SOUND
 #region Using Statements
 using LinkTheBoomerangMaster.Classes;
 using Microsoft.Xna.Framework;
@@ -50,7 +50,7 @@ namespace LinkTheBoomerangMaster
 
         public Scoreboard scoreBoard;
 
-        GameMenu menu;
+        public GameMenu menu;
 
         public Player link;
 
@@ -267,13 +267,13 @@ namespace LinkTheBoomerangMaster
 
         public void SwitchLevel(int levelNum = 0)
         {
-            if (levelNum == 0)
+            if (levelNum == 0 && currentLevel < 7)
                 levelNum = ++currentLevel;
             this.currentLevelPoints = 0;
             PrepareGame(levelNum);
         }
 
-        internal void PrepareGame(int levelNum = 1)
+        internal void PrepareGame(int levelNum = 1, bool isNewGame = false)
         {
             LoadContent();
             menu = new GameMenu(this);
@@ -288,7 +288,22 @@ namespace LinkTheBoomerangMaster
             bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
             scoreBoard = new Scoreboard(this);
-            link = new Player(this, link == null ? 0 : link.RupeeCount, link == null ? 0 : link.ArrowCount, link == null ? 0 : link.BombCount);
+            int lives, bombs, arrows, rupees;
+            if(isNewGame)
+            {
+                lives = 3;
+                bombs = 0;
+                arrows = 0;
+                rupees = 0;
+            }
+            else
+            {
+                lives = link == null ? 3 : link.LifeCount;
+                bombs = link == null ? 0 : link.BombCount;
+                arrows = link == null ? 0 : link.ArrowCount;
+                rupees = link == null ? 0 : link.RupeeCount;
+            }
+            link = new Player(this, rupees, arrows, bombs, lives);
             Input.link = link;
             Input.boom = boomerang1;
             level = new Level(this);

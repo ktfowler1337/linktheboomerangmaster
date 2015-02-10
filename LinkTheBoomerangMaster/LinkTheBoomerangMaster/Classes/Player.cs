@@ -13,6 +13,8 @@ namespace LinkTheBoomerangMaster
     {
         public GameController _game;
 
+        bool LinkCollision = false;
+
         public int EnemyDestroyCount = 0;
 
         public const int Frames = 8;
@@ -35,12 +37,13 @@ namespace LinkTheBoomerangMaster
 
         public Rectangle shield;
 
-        public Player(GameController game, int rupees, int arrowCount = 0, int bombCount =0) : base(2f)
+        public Player(GameController game, int rupees, int arrowCount = 0, int bombCount =0, int lives = 0) : base(2f)
         {
             _game = game;
             ArrowCount = arrowCount;
             BombCount = bombCount;
             RupeeCount = rupees;
+            LifeCount = lives;
             throwAni = new AnimatedTexture(Position, 0, 2, 0.5f);
             Texture = new _2DTexture(game.Content.Load<Texture2D>("player/linkidle" + (GameController.Difficulty == "Normal" ? "" : "small")), GameController.scale);
             throwIdle = new _2DTexture(game.Content.Load<Texture2D>("player/linkidlewithboom"), 2);
@@ -116,21 +119,31 @@ namespace LinkTheBoomerangMaster
 		public int CheckLinkCollision( GameObject boom)
 		{
 			if (this.shield.Intersects (boom.Bounds)) {
-				Rectangle leftSide = this.GetLeftShield ();
-				Rectangle rightSide = this.GetRightShield ();
+                if (!LinkCollision)
+                {
+                    LinkCollision = true;
+                    Rectangle leftSide = this.GetLeftShield();
+                    Rectangle rightSide = this.GetRightShield();
 
-				//if contants left side
-				if (leftSide.Intersects (boom.Bounds)) {
-					return 1;
-				}
+                    //if contants left side
+                    if (leftSide.Intersects(boom.Bounds))
+                    {
+                        return 1;
+                    }
 
-				//if contants right side
-				if (rightSide.Intersects (boom.Bounds)) {
-					return 2;
-				}
-				//else middle
-				return 0;
+                    //if contants right side
+                    if (rightSide.Intersects(boom.Bounds))
+                    {
+                        return 2;
+                    }
+                    //else middle
+                    return 0;
+                }
 			}
+            else
+            {
+                LinkCollision = false;
+            }
 			return -1;
 		}
     }

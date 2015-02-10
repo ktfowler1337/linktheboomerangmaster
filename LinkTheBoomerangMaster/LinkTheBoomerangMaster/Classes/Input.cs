@@ -1,4 +1,4 @@
-﻿//#define PLAY_SOUND
+﻿#define PLAY_SOUND
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,7 +121,8 @@ namespace LinkTheBoomerangMaster
                 {
                     if (menu.Selected == 1)
                     {
-                        link._game.PrepareGame();
+                        link._game.PrepareGame(1,true);
+                        GameController.Paused = false;
                     }
                     else if (menu.Selected == 2)
                     {
