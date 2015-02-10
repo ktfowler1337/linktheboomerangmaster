@@ -170,6 +170,7 @@ namespace LinkTheBoomerangMaster.Classes
                 this.launched = false;
                 this.Position = new Vector2(500, 500);
                 link.LifeCount -= 1;
+                flipSuperang(false);
                 _game.level.ArcherHit = false;
                 _game.level.WizardHit = false;
                 _game.link.EnemyDestroyCount = 0;
