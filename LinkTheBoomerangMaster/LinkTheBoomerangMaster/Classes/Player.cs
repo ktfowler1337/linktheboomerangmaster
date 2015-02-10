@@ -13,6 +13,8 @@ namespace LinkTheBoomerangMaster
     {
         public GameController _game;
 
+        bool LinkCollision = false;
+
         public int EnemyDestroyCount = 0;
 
         public const int Frames = 8;
@@ -117,21 +119,31 @@ namespace LinkTheBoomerangMaster
 		public int CheckLinkCollision( GameObject boom)
 		{
 			if (this.shield.Intersects (boom.Bounds)) {
-				Rectangle leftSide = this.GetLeftShield ();
-				Rectangle rightSide = this.GetRightShield ();
+                if (!LinkCollision)
+                {
+                    LinkCollision = true;
+                    Rectangle leftSide = this.GetLeftShield();
+                    Rectangle rightSide = this.GetRightShield();
 
-				//if contants left side
-				if (leftSide.Intersects (boom.Bounds)) {
-					return 1;
-				}
+                    //if contants left side
+                    if (leftSide.Intersects(boom.Bounds))
+                    {
+                        return 1;
+                    }
 
-				//if contants right side
-				if (rightSide.Intersects (boom.Bounds)) {
-					return 2;
-				}
-				//else middle
-				return 0;
+                    //if contants right side
+                    if (rightSide.Intersects(boom.Bounds))
+                    {
+                        return 2;
+                    }
+                    //else middle
+                    return 0;
+                }
 			}
+            else
+            {
+                LinkCollision = false;
+            }
 			return -1;
 		}
     }

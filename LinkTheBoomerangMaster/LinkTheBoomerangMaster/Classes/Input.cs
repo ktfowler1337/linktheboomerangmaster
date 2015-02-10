@@ -121,7 +121,8 @@ namespace LinkTheBoomerangMaster
                 {
                     if (menu.Selected == 1)
                     {
-                        link._game.PrepareGame();
+                        link._game.PrepareGame(1,true);
+                        GameController.Paused = false;
                     }
                     else if (menu.Selected == 2)
                     {

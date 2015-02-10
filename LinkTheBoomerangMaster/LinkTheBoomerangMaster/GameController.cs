@@ -50,7 +50,7 @@ namespace LinkTheBoomerangMaster
 
         public Scoreboard scoreBoard;
 
-        GameMenu menu;
+        public GameMenu menu;
 
         public Player link;
 
@@ -273,7 +273,7 @@ namespace LinkTheBoomerangMaster
             PrepareGame(levelNum);
         }
 
-        internal void PrepareGame(int levelNum = 1)
+        internal void PrepareGame(int levelNum = 1, bool isNewGame = false)
         {
             LoadContent();
             menu = new GameMenu(this);
@@ -288,7 +288,22 @@ namespace LinkTheBoomerangMaster
             bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
             scoreBoard = new Scoreboard(this);
-            link = new Player(this, link == null ? 0 : link.RupeeCount, link == null ? 0 : link.ArrowCount, link == null ? 0 : link.BombCount, link == null ? 3 : link.LifeCount);
+            int lives, bombs, arrows, rupees;
+            if(isNewGame)
+            {
+                lives = 3;
+                bombs = 0;
+                arrows = 0;
+                rupees = 0;
+            }
+            else
+            {
+                lives = link == null ? 3 : link.LifeCount;
+                bombs = link == null ? 0 : link.BombCount;
+                arrows = link == null ? 0 : link.ArrowCount;
+                rupees = link == null ? 0 : link.RupeeCount;
+            }
+            link = new Player(this, rupees, arrows, bombs, lives);
             Input.link = link;
             Input.boom = boomerang1;
             level = new Level(this);
