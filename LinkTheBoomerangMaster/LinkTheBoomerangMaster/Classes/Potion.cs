@@ -61,7 +61,7 @@ namespace LinkTheBoomerangMaster.Classes
 				} else if (powerupType == 3) {
 					//put in fire code here
 					foreach (Bouncerang b in _game.bouncerangs) {
-						b.flipSuperang ();
+						b.flipSuperang (true);
 					}
 				}
 				_game.link.RupeeCount += this.rupees;
