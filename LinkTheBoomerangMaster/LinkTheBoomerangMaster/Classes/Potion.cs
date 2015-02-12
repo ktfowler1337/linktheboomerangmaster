@@ -27,7 +27,19 @@ namespace LinkTheBoomerangMaster.Classes
 			powerupType = powerup;
 			rupees = 5;
 			Position = new Vector2(10, 10);
-			Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/potion"), 2);
+            if (powerupType == 1)
+            {
+                Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/arrow"), 2);
+            }
+            else if (powerupType == 2)
+            {
+                Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/singleBomb"), 2);
+            }
+            else if (powerupType == 3)
+            {
+                Texture = new _2DTexture(_game.Content.Load<Texture2D>("projectiles/potion"), 2);
+            }
+			
 			game.Projectiles.Add(this);
             #if PLAY_SOUND
             gotItem = game.Content.Load<SoundEffect>("sounds/LA_Get_PowerUp");
@@ -63,16 +75,23 @@ namespace LinkTheBoomerangMaster.Classes
                 #if PLAY_SOUND
                 gotItem.Play(GameController.SoundVolume, 0, 0);
                 #endif
+                string textToDisplay = "You got ";
                 if (powerupType == 1) {
 					_game.link.ArrowCount += 3;
+                    textToDisplay += "Arrows!";
 				} else if (powerupType == 2) {
 					_game.link.BombCount += 1;
+                    textToDisplay += "Bombs!";
 				} else if (powerupType == 3) {
 					//put in fire code here
 					foreach (Bouncerang b in _game.bouncerangs) {
 						b.flipSuperang (true);
 					}
+                    textToDisplay += "the Superang!";
 				}
+                _game.gotItemText = textToDisplay;
+                _game.showItemText = true;
+                _game.showItemTextCounter = 0;
 				_game.link.RupeeCount += this.rupees;
                 _game.currentLevelPoints += this.rupees;
 				_game.Projectiles.Remove(this);

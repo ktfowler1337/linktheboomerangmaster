@@ -252,7 +252,7 @@ namespace LinkTheBoomerangMaster
             else
                 if (showItemText && showItemTextCounter < 100)
                 {
-                    spriteBatch.DrawString(fontBig, "Got Item!", new Vector2(220, 55), Color.White);
+                    spriteBatch.DrawString(fontBig, gotItemText, new Vector2(200, 55), Color.White);
                     showItemTextCounter++;
                 }
             spriteBatch.End();
@@ -284,7 +284,7 @@ namespace LinkTheBoomerangMaster
             ScreenWidth = GraphicsDevice.Viewport.Width;
             Bouncerang boomerang1 = new Bouncerang(this);
             boomerang1.Texture = new _2DTexture(Content.Load<Texture2D>("projectiles/boom"), scale);
-            fontBig = Content.Load<SpriteFont>("fonts/font");
+            fontBig = Content.Load<SpriteFont>("fonts/font12");
             bouncerangs.Add(boomerang1);
             environment = new GameEnvironment(this);
             scoreBoard = new Scoreboard(this);
